@@ -1,108 +1,187 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/profile"></ion-back-button> <!-- Adjust defaultHref as needed -->
+      <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-title>Car Information</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-  
-  <!-- Car Form Section - Always visible -->
-  <form [formGroup]="carForm" (ngSubmit)="addCar()">
-    <ion-list>
-      <ion-item>
-        <ion-input
-          label="Car Plate Number"
-          labelPlacement="stacked"
-          formControlName="license_plate"
-          placeholder="Enter plate number"
-          type="text"
-          required
-          [class.ion-invalid]="license_plate?.invalid && license_plate?.touched"
-          [class.ion-valid]="license_plate?.valid && license_plate?.touched">
-        </ion-input>
-      </ion-item>
-      <ion-note slot="error" *ngIf="license_plate?.invalid && license_plate?.touched">
-        <div *ngIf="license_plate?.errors?.['required']">Plate number is required.</div>
-        <div *ngIf="license_plate?.errors?.['minlength']">Plate number is too short.</div>
-        <div *ngIf="license_plate?.errors?.['maxlength']">Plate number is too long.</div>
-      </ion-note>
+<ion-content class="ion-padding">
+  <!-- Car Registration Form -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ isEditMode ? 'Edit Car' : 'Add New Car' }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="carForm" (ngSubmit)="submitCarForm()">
+        <ion-list>
+          <!-- License Plate Input -->
+          <ion-item>
+            <ion-label position="stacked">License Plate *</ion-label>
+            <ion-input 
+              formControlName="license_plate"
+              placeholder="Enter license plate"
+              type="text">
+            </ion-input>
+          </ion-item>
+          <ion-note 
+            color="danger" 
+            *ngIf="license_plate?.invalid && license_plate?.touched">
+            <div *ngIf="license_plate?.errors?.['required']">License plate is required</div>
+            <div *ngIf="license_plate?.errors?.['minlength']">License plate must be at least 2 characters</div>
+            <div *ngIf="license_plate?.errors?.['maxlength']">License plate cannot exceed 15 characters</div>
+          </ion-note>
 
-      <ion-item>
-        <ion-select
-          label="Select Car Brand"
-          labelPlacement="stacked"
-          formControlName="car_brand_id"
-          placeholder="Choose brand"
-          okText="Okay"
-          cancelText="Dismiss"
-          required
-          [class.ion-invalid]="car_brand_id?.invalid && car_brand_id?.touched"
-          [class.ion-valid]="car_brand_id?.valid && car_brand_id?.touched">
-          <ion-select-option *ngFor="let brand of carBrands$ | async" [value]="brand.id">
-            {{ brand.name }}
-          </ion-select-option>
-        </ion-select>
-      </ion-item>
-      <ion-note slot="error" *ngIf="car_brand_id?.invalid && car_brand_id?.touched">
-        Car brand is required.
-      </ion-note>
+          <!-- Car Brand Select -->
+          <ion-item>
+            <ion-label position="stacked">Car Brand *</ion-label>
+            <ion-select 
+              formControlName="car_brand_id"
+              placeholder="Select car brand"
+              interface="popover">
+              <ion-select-option 
+                *ngFor="let brand of carBrands$ | async" 
+                [value]="brand.id">
+                {{ brand.name }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-note 
+            color="danger" 
+            *ngIf="car_brand_id?.invalid && car_brand_id?.touched">
+            Car brand is required
+          </ion-note>
 
-      <ion-item>
-        <ion-select
-          label="Select Car Model"
-          labelPlacement="stacked"
-          formControlName="car_model_id"
-          placeholder="Choose model"
-          okText="Okay"
-          cancelText="Dismiss"
-          required
-          [disabled]="isCarModelSelectDisabled"
-          [class.ion-invalid]="car_model_id?.invalid && car_model_id?.touched"
-          [class.ion-valid]="car_model_id?.valid && car_model_id?.touched">
-          <ion-select-option *ngFor="let model of carModels$ | async" [value]="model.id">
-            {{ model.name }}
-          </ion-select-option>
-        </ion-select>
-      </ion-item>
-      <ion-note slot="error" *ngIf="car_model_id?.invalid && car_model_id?.touched && !carForm.get('car_model_id')?.disabled">
-        Car model is required.
-      </ion-note>
-    </ion-list>
+          <!-- Car Model Select -->
+          <ion-item>
+            <ion-label position="stacked">Car Model *</ion-label>
+            <ion-select 
+              formControlName="car_model_id"
+              placeholder="Select car model"
+              interface="popover"
+              [disabled]="isCarModelSelectDisabled">
+              <ion-select-option 
+                *ngFor="let model of carModels$ | async" 
+                [value]="model.id">
+                {{ model.name }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-note 
+            color="danger" 
+            *ngIf="car_model_id?.invalid && car_model_id?.touched">
+            Car model is required
+          </ion-note>
+          <ion-note 
+            color="medium" 
+            *ngIf="isCarModelSelectDisabled">
+            Please select a car brand first
+          </ion-note>
+        </ion-list>
 
-    <ion-button type="submit" expand="block" class="ion-margin-top" [disabled]="carForm.invalid">
-      Add Car
-    </ion-button>
-  </form>
-
-  <!-- Your Cars Section - Show list of added cars -->
-  <div *ngIf="userCars.length > 0" class="ion-margin-top">
-    <h3>🚗 Your Cars:</h3>
-    
-    <div *ngFor="let car of userCars; let i = index" class="car-item ion-margin-bottom">
-      <div class="car-info">
-        🚙 <strong>{{ car.license_plate }}</strong><br>
-        <span class="car-details">Brand: {{ car.car_brand_name }}</span><br>
-        <span class="car-details">Model: {{ car.car_model_name }}</span>
-      </div>
-      
-      <div class="car-actions">
-        <ion-button fill="clear" color="danger" size="small" (click)="removeCar(i)">
-          ❌ Remove
+        <!-- Add Car Button -->
+        <ion-button 
+          expand="block" 
+          type="submit"
+          [disabled]="carForm.invalid || isSubmitting"
+          class="ion-margin-top">
+          <ion-icon [name]="isEditMode ? 'save' : 'add-circle'" slot="start"></ion-icon>
+          {{ isEditMode ? 'Update Car' : 'Add Car' }}
         </ion-button>
-        <ion-button fill="clear" color="medium" size="small" (click)="editCar(i)">
-          ✏️ Edit
+        <ion-button
+          *ngIf="isEditMode"
+          expand="block"
+          fill="outline"
+          color="medium"
+          (click)="cancelEdit()"
+          class="ion-margin-top">
+          <ion-icon name="close-circle" slot="start"></ion-icon>
+          Cancel Edit
         </ion-button>
-      </div>
-    </div>
+      </form>
+    </ion-card-content>
+  </ion-card>
 
-    <div class="action-buttons ion-margin-top">
-      <ion-button expand="block" color="success" (click)="done()">
-        Done
-      </ion-button>
-    </div>
+  <!-- Display Added Cars -->
+  <div *ngIf="userCars.length > 0">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="car-sport" class="ion-margin-end"></ion-icon>
+          My Cars ({{ userCars.length }})
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row *ngFor="let car of userCars; let i = index" class="car-item">
+            <ion-col size="12">
+              <div class="car-card">
+                <div class="car-info">
+                  <h3 class="license-plate">{{ car.license_plate }}</h3>
+                  <p class="car-details">
+                    <ion-icon name="business" class="detail-icon"></ion-icon>
+                    <strong>Brand:</strong> {{ car.car_brand?.name || 'N/A' }}
+                  </p>
+                  <p class="car-details">
+                    <ion-icon name="car" class="detail-icon"></ion-icon>
+                    <strong>Model:</strong> {{ car.car_model?.name || 'N/A' }}
+                  </p>
+                </div>
+                <div class="car-actions">
+                  <ion-button
+                    fill="clear"
+                    size="small"
+                    color="primary"
+                    (click)="editCar(car)">
+                    <ion-icon name="create" slot="icon-only"></ion-icon>
+                  </ion-button>
+                  <ion-button
+                    fill="clear"
+                    size="small"
+                    color="danger"
+                    (click)="removeCar(userCars.indexOf(car))">
+                    <ion-icon name="trash" slot="icon-only"></ion-icon>
+                  </ion-button>
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons ion-margin-top">
+          <ion-button 
+            expand="block" 
+            fill="outline"
+            color="primary"
+            (click)="goToCarSummary()"
+            *ngIf="userCars.length > 0">
+            <ion-icon name="list" slot="start"></ion-icon>
+            View Car Summary
+          </ion-button>
+          
+          <ion-button
+            expand="block" 
+            color="success"
+            (click)="done()"
+            class="ion-margin-top">
+            <ion-icon name="checkmark-circle" slot="start"></ion-icon>
+            Done
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
   </div>
 
+  <!-- Empty State -->
+  <ion-card *ngIf="userCars.length === 0 && showCarDetails === false">
+    <ion-card-content class="empty-state">
+      <div class="empty-icon">
+        <ion-icon name="car-sport-outline" size="large" color="medium"></ion-icon>
+      </div>
+      <h3>No Cars Added Yet</h3>
+      <p>Add your first car using the form above to get started.</p>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

@@ -73,6 +73,16 @@ export class CarService {
       .pipe(catchError(this.handleError));
   }
 
+  deleteUserCar(carId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/user-cars/${carId}`, { headers: this.getAuthHeaders() })
+      .pipe(catchError(this.handleError));
+  }
+
+  updateUserCar(carId: string, carData: NewUserCar): Observable<UserCar> {
+    return this.http.put<UserCar>(`${this.apiUrl}/user-cars/${carId}`, carData, { headers: this.getAuthHeaders() })
+      .pipe(catchError(this.handleError));
+  }
+
   // Basic error handler
   private handleError(error: any) {
     console.error('An API error occurred', error);

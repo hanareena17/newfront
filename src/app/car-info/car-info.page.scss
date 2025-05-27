@@ -1,11 +1,17 @@
-// Styling for Your Cars section
-h3 {
-  color: var(--ion-color-primary);
+// Car Info Page Styles
+.car-item {
+  border-bottom: 1px solid var(--ion-color-light);
+  padding-bottom: 16px;
   margin-bottom: 16px;
-  font-weight: 600;
+
+  &:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
 }
 
-.car-item {
+.car-card {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -13,43 +19,152 @@ h3 {
   background: var(--ion-color-light);
   border-radius: 8px;
   border-left: 4px solid var(--ion-color-primary);
+}
+
+.car-info {
+  flex: 1;
   
-  .car-info {
-    flex: 1;
-    
-    strong {
-      color: var(--ion-color-primary);
-      font-size: 1.1em;
-    }
-    
-    .car-details {
-      color: var(--ion-color-medium);
-      font-size: 0.9em;
-      line-height: 1.4;
-    }
+  .license-plate {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--ion-color-primary);
+    margin: 0 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
   }
-  
-  .car-actions {
+
+  .car-details {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
-    
-    ion-button {
-      --padding-start: 8px;
-      --padding-end: 8px;
-      font-size: 0.8em;
+    align-items: center;
+    margin: 4px 0;
+    font-size: 0.9rem;
+    color: var(--ion-color-dark);
+
+    .detail-icon {
+      margin-right: 8px;
+      color: var(--ion-color-medium);
+      font-size: 0.9rem;
+    }
+
+    strong {
+      margin-right: 4px;
     }
   }
+}
+
+.car-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
 }
 
 .action-buttons {
   border-top: 1px solid var(--ion-color-light);
   padding-top: 16px;
+  margin-top: 16px;
 }
 
-// Dark mode support
-@media (prefers-color-scheme: dark) {
-  .car-item {
-    background: var(--ion-color-dark);
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+
+  .empty-icon {
+    margin-bottom: 16px;
   }
+
+  h3 {
+    color: var(--ion-color-medium);
+    margin: 0 0 8px 0;
+  }
+
+  p {
+    color: var(--ion-color-medium);
+    margin: 0;
+    font-size: 0.9rem;
+  }
+}
+
+// Form styling improvements
+ion-card {
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+ion-card-header {
+  ion-card-title {
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+    color: var(--ion-color-primary);
+  }
+}
+
+ion-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 8px;
+}
+
+ion-label[position="stacked"] {
+  font-weight: 500;
+  color: var(--ion-color-dark);
+}
+
+ion-note {
+  padding: 4px 0;
+  font-size: 0.8rem;
+  
+  &[color="danger"] {
+    font-weight: 500;
+  }
+}
+
+// Button styling
+ion-button[expand="block"] {
+  margin: 16px 0 8px 0;
+  font-weight: 500;
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .car-card {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .car-actions {
+    flex-direction: row;
+    align-self: flex-end;
+  }
+}
+
+// Loading and disabled states
+ion-select[disabled] {
+  opacity: 0.6;
+}
+
+// Success states
+.car-added-success {
+  border-left-color: var(--ion-color-success) !important;
+  
+  .license-plate {
+    color: var(--ion-color-success) !important;
+  }
+}
+
+// Animation for new car items
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.car-item {
+  animation: slideInUp 0.3s ease-out;
 }
