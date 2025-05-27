@@ -3,14 +3,22 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController, ToastController, LoadingController } from '@ionic/angular';
 import { CarBrand, CarModel, CarService, NewUserCar } from '../services/car.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, firstValueFrom } from 'rxjs';
 import { catchError, finalize, tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 import {
   IonContent, IonHeader, IonTitle, IonToolbar,
   IonButtons, IonBackButton, IonList,
-  IonItem, IonButton, IonLabel, IonInput, IonSelect, IonSelectOption, IonNote
+  IonItem, IonButton, IonLabel, IonInput, IonSelect, IonSelectOption, IonNote,
+  IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonGrid, IonRow, IonCol
 } from '@ionic/angular/standalone';
+
+interface CarDetailsSummary {
+  license_plate: string;
+  car_brand_name: string;
+  car_model_name: string;
+}
 
 @Component({
   selector: 'app-car-info',
@@ -21,6 +29,7 @@ import {
     IonContent, IonHeader, IonTitle, IonToolbar,
     IonButtons, IonBackButton, IonList,
     IonItem, IonButton, IonLabel, IonInput, IonSelect, IonSelectOption, IonNote,
+    IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonGrid, IonRow, IonCol,
     CommonModule,
     FormsModule,
     ReactiveFormsModule
@@ -31,6 +40,13 @@ export class CarInfoPage implements OnInit {
   carBrands$: Observable<CarBrand[]> = of([]);
   carModels$: Observable<CarModel[]> = of([]);
   
+  // New properties for displaying car details
+  showCarDetails: boolean = false;
+  carDetails: CarDetailsSummary | null = null;
+  
+  // Array to store multiple cars
+  userCars: CarDetailsSummary[] = [];
+  
   get isCarModelSelectDisabled(): boolean {
     return this.carForm.controls['car_model_id'].disabled;
   }
@@ -40,7 +56,8 @@ export class CarInfoPage implements OnInit {
     private carService: CarService,
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private router: Router
   ) {
     this.carForm = this.fb.group({
       license_plate: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(15)]],
@@ -115,26 +132,68 @@ export class CarInfoPage implements OnInit {
     };
 
     this.carService.addUserCar(carData).pipe(
-      tap(async (newCar) => {
+      tap(async (addedUserCar) => {
         await this.presentToast('Car added successfully!', 'success');
-        this.carForm.reset();
-        this.carForm.controls['car_model_id'].disable(); // Use controls property
+
+        try {
+          // Get current values from observables
+          const brands: CarBrand[] = await firstValueFrom(this.carBrands$);
+          const models: CarModel[] = await firstValueFrom(this.carModels$);
+
+          // Now use the resolved arrays 'brands' and 'models'
+          const selectedBrand = brands.find(b => b.id === carData.car_brand_id);
+          const selectedModel = models.find(m => m.id === carData.car_model_id);
+
+          this.carDetails = {
+            license_plate: addedUserCar.license_plate,
+            car_brand_name: selectedBrand ? selectedBrand.name : 'N/A',
+            car_model_name: selectedModel ? selectedModel.name : 'N/A',
+          };
+
+          // Add to user cars array
+          this.userCars.push(this.carDetails);
+
+          // Reset form for next entry
+          this.carForm.reset();
+          this.carForm.controls['car_model_id'].disable();
+          this.carModels$ = of([]);
+
+          // Show car details below form
+          this.showCarDetails = true;
+
+        } catch (e) {
+          console.error("Error fetching brands/models for summary:", e);
+          // Fallback if fetching brands/models for summary fails
+          this.carDetails = {
+            license_plate: addedUserCar.license_plate,
+            car_brand_name: 'N/A', // Fallback name
+            car_model_name: 'N/A', // Fallback name
+          };
+          
+          // Add to user cars array
+          this.userCars.push(this.carDetails);
+          
+          // Reset form for next entry
+          this.carForm.reset();
+          this.carForm.controls['car_model_id'].disable();
+          this.carModels$ = of([]);
+          
+          this.showCarDetails = true;
+        }
+
       }),
       catchError(async (err) => {
         let errorMessage = 'Failed to add car.';
-        // Check if err and err.error exist and err.error is an object
         if (err && err.error && typeof err.error === 'object') {
-            // Assert the type of err.error.errors if it exists
             const apiErrors = (err.error as any).errors as Record<string, string[]>;
             if (apiErrors && typeof apiErrors === 'object') {
-                // Use reduce and concat for flattening, with explicit types
                 errorMessage = Object.values(apiErrors)
                                    .reduce((acc: string[], val: string[]) => acc.concat(val), [])
                                    .join(' ');
-            } else if ((err.error as any).message) { // Check for a message property on err.error
+            } else if ((err.error as any).message) {
                 errorMessage = (err.error as any).message;
             }
-        } else if (err && err.message) { // Fallback to err.message
+        } else if (err && err.message) {
             errorMessage = err.message;
         }
         await this.presentToast(errorMessage, 'danger');
@@ -142,6 +201,33 @@ export class CarInfoPage implements OnInit {
       }),
       finalize(() => loading.dismiss())
     ).subscribe();
+  }
+
+  // Method to remove a car from the list
+  removeCar(index: number) {
+    this.userCars.splice(index, 1);
+    if (this.userCars.length === 0) {
+      this.showCarDetails = false;
+    }
+  }
+
+  // Method to edit a car (placeholder - could navigate to edit page)
+  editCar(index: number) {
+    const carToEdit = this.userCars[index];
+    console.log('Edit car:', carToEdit);
+    // Implement edit functionality here
+  }
+
+  // New method when user is done
+  done() {
+    this.navCtrl.navigateRoot('/home'); // Navigate to home or another appropriate page
+  }
+
+  // New method to go to car summary page (optional)
+  goToCarSummary() {
+    if (this.carDetails) {
+      this.router.navigate(['/car-summary'], { state: { carDetails: this.carDetails } });
+    }
   }
 
   async presentToast(message: string, color: 'success' | 'warning' | 'danger' | 'primary' | 'secondary' | 'tertiary' | 'light' | 'medium' | 'dark' = 'medium') {

@@ -8,6 +8,8 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
+  
+  <!-- Car Form Section - Always visible -->
   <form [formGroup]="carForm" (ngSubmit)="addCar()">
     <ion-list>
       <ion-item>
@@ -74,4 +76,33 @@
       Add Car
     </ion-button>
   </form>
+
+  <!-- Your Cars Section - Show list of added cars -->
+  <div *ngIf="userCars.length > 0" class="ion-margin-top">
+    <h3>🚗 Your Cars:</h3>
+    
+    <div *ngFor="let car of userCars; let i = index" class="car-item ion-margin-bottom">
+      <div class="car-info">
+        🚙 <strong>{{ car.license_plate }}</strong><br>
+        <span class="car-details">Brand: {{ car.car_brand_name }}</span><br>
+        <span class="car-details">Model: {{ car.car_model_name }}</span>
+      </div>
+      
+      <div class="car-actions">
+        <ion-button fill="clear" color="danger" size="small" (click)="removeCar(i)">
+          ❌ Remove
+        </ion-button>
+        <ion-button fill="clear" color="medium" size="small" (click)="editCar(i)">
+          ✏️ Edit
+        </ion-button>
+      </div>
+    </div>
+
+    <div class="action-buttons ion-margin-top">
+      <ion-button expand="block" color="success" (click)="done()">
+        Done
+      </ion-button>
+    </div>
+  </div>
+
 </ion-content>

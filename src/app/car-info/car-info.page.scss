@@ -1,29 +1,55 @@
-ion-card {
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-    background: #f9f9f9;
+// Styling for Your Cars section
+h3 {
+  color: var(--ion-color-primary);
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.car-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 12px;
+  background: var(--ion-color-light);
+  border-radius: 8px;
+  border-left: 4px solid var(--ion-color-primary);
+  
+  .car-info {
+    flex: 1;
+    
+    strong {
+      color: var(--ion-color-primary);
+      font-size: 1.1em;
+    }
+    
+    .car-details {
+      color: var(--ion-color-medium);
+      font-size: 0.9em;
+      line-height: 1.4;
+    }
   }
   
-  ion-item {
-    margin-bottom: 16px;
-    border-radius: 12px;
-    --background: #ffffff;
-    --padding-start: 14px;
-    --inner-padding-end: 14px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  .car-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    
+    ion-button {
+      --padding-start: 8px;
+      --padding-end: 8px;
+      font-size: 0.8em;
+    }
   }
-  
-  ion-label {
-    font-size: 14px;
-    color: #444;
+}
+
+.action-buttons {
+  border-top: 1px solid var(--ion-color-light);
+  padding-top: 16px;
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .car-item {
+    background: var(--ion-color-dark);
   }
-  
-  .add-btn {
-    margin-top: 20px;
-    --background: #3a86ff;
-    border-radius: 12px;
-    font-weight: 600;
-    text-transform: none;
-    font-size: 15px;
-  }
-  
+}
