@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/profile"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Payments & Disbursements</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card *ngFor="let payment of payments">
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-label>
+          <h3>{{ payment.type }}</h3>
+          <p>{{ payment.date }}</p>
+        </ion-label>
+        <div [ngClass]="{'positive': payment.amount > 0, 'negative': payment.amount < 0}">
+          RM{{ payment.amount }}
+        </div>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

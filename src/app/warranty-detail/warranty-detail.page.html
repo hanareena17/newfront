@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/order-detail"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Warranty Info</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Warranty Details</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Serial Number:</strong> {{ warranty.serialNumber }}</p>
+      <p><strong>Start Date:</strong> {{ warranty.startDate }}</p>
+      <p><strong>End Date:</strong> {{ warranty.endDate }}</p>
+      <p><strong>Notes:</strong> {{ warranty.notes }}</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

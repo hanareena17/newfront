@@ -1,0 +1,65 @@
+<ion-content class="login-page">
+
+  <!-- Video Background
+  <video autoplay muted loop playsinline class="bg-video">
+    <source src="assets/videos/background.mp4" type="video/mp4" />
+  </video> -->
+
+  <!-- Foreground Login Content -->
+  <div class="login-wrapper">
+
+    <!-- Illustration -->
+    <div class="illustration-container">
+      <img src="assets/icon/logo.png" alt="Login illustration" />
+    </div>
+
+    <!-- Login Card -->
+    <div class="login-card">
+      <h2>Login</h2>
+
+      <form (submit)="login()">
+        <ion-item class="input-item">
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-input type="email" placeholder="Email ID" [(ngModel)]="email" name="email"></ion-input>
+        </ion-item>
+
+        <ion-item class="input-item">
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-input type="password" placeholder="Password" [(ngModel)]="password" name="password"></ion-input>
+        </ion-item>
+
+        <div class="forgot-row">
+          <a (click)="goToForgotPassword()">Forgot Password?</a>
+        </div>
+
+        <ion-button expand="block" type="submit" class="login-btn">Login</ion-button>
+
+        <div class="or-divider">
+          <span>OR</span>
+        </div>
+
+        <ion-button expand="block" fill="clear" class="google-btn">
+          <span class="google-content">
+          <img src="assets/icon/google.png" alt="Google" />  
+          <span>Login with Google</span> 
+        </span>
+        </ion-button>
+
+        <ion-button expand="block" fill="clear" class="guest-btn" (click)="loginAsGuest()">
+          <span class="guest-content">
+            <ion-icon name="person-circle-outline" slot="start"></ion-icon>
+            <span>Continue as Guest</span>
+          </span>
+        </ion-button>
+        
+        <p class="register-text">
+          New to BateriKereta? 
+          <a style="cursor: pointer" (click)="goToRegister()">Register</a>
+        </p>
+        
+      
+      </form>
+    </div>
+
+  </div>
+</ion-content>

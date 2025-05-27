@@ -1,0 +1,37 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/history"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Order Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h2>Order Code: #{{ order.code }}</h2>
+  <p>Date: {{ order.date }}</p>
+  <ion-list>
+    <ion-item *ngFor="let item of order.items">
+      <ion-thumbnail slot="start">
+        <img [src]="item.img" />
+      </ion-thumbnail>
+      <ion-label>
+        <h3>{{ item.name }}</h3>
+        <p>Quantity: {{ item.qty }} | RM{{ item.price }}</p>
+
+        <p *ngIf="item.warrantyStatus">
+          Warranty:
+          <span [style.color]="item.warrantyStatus === 'Active' ? 'green' : 'red'">
+                                                                                                                                                                                                                                                                                                   {{ item.warrantyStatus }}
+          </span>
+          <ion-button class="warranty-btn" fill="clear" size="small" (click)="goToWarranty(item)">
+            VIEW WARRANTY
+          </ion-button>
+        </p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-button expand="block" color="medium" fill="outline" (click)="goToInvoicePreview()" class="invoice-btn">
+    Invoice
+  </ion-button>
+</ion-content> -->

@@ -1,0 +1,50 @@
+<ion-content class="register-page">
+  <div class="register-wrapper">
+
+    <!-- Logo / Illustration -->
+    <div class="illustration-container">
+      <img src="assets/icon/logo.png" alt="Register illustration" />
+    </div>
+
+    <!-- Register Card -->
+    <div class="register-card">
+      <h2>Create Account</h2>
+
+      <form name="registerForm" (submit)="register()">
+
+        <ion-item class="input-item">
+          <ion-icon name="person-outline" slot="start"></ion-icon>
+          <ion-input type="text" placeholder="Full Name" [(ngModel)]="name" name="name"></ion-input>
+        </ion-item>
+
+        <ion-item class="input-item">
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-input type="email" placeholder="Email Address" [(ngModel)]="email" name="email"></ion-input>
+        </ion-item>
+
+        <ion-item class="input-item">
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-input type="password" placeholder="Password" [(ngModel)]="password" name="password"></ion-input>
+        </ion-item>
+
+        <ion-item class="input-item">
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-input type="password" placeholder="Confirm Password" [(ngModel)]="passwordConfirmation" name="password_confirmation"></ion-input>
+        </ion-item>
+
+        <ion-item class="input-item">
+          <ion-icon name="call-outline" slot="start"></ion-icon>
+          <ion-input type="tel" placeholder="Phone Number" [(ngModel)]="phone" name="phone"></ion-input>
+        </ion-item>
+
+        <ion-button expand="block" type="submit" class="register-btn">Register</ion-button>
+
+        <p class="login-text">
+          Already have an account? 
+          <a style="cursor: pointer;" (click)="goToLogin()">Login</a>
+        </p>
+
+      </form>
+    </div>
+  </div>
+</ion-content>

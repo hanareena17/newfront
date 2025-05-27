@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/profile"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Profile information</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <h4 class="section-title">Personal Information</h4>
+
+  <div class="profile-image-container">
+    <img *ngIf="getProfileImage()" [src]="getProfileImage()" alt="Profile Picture" class="profile-image" />
+    <div *ngIf="!getProfileImage()" class="profile-image-placeholder">
+      <!-- You can put an icon or text here if you want a placeholder when no image -->
+      <ion-icon name="person-circle-outline" style="font-size: 64px; color: #ccc;"></ion-icon>
+    </div>
+    <div class="image-buttons">
+      <ion-button fill="clear" class="change-photo-btn" (click)="fileInput.click()">
+        <ion-icon name="camera-outline" slot="start"></ion-icon>
+        Change Photo
+      </ion-button>
+      <ion-button fill="clear" color="danger" class="delete-photo-btn" (click)="confirmDeleteProfileImage()" *ngIf="getProfileImage()">
+        <ion-icon name="trash-outline" slot="start"></ion-icon>
+        Delete Photo
+      </ion-button>
+    </div>
+    <input #fileInput type="file" accept="image/*" style="display: none" (change)="onFileSelected($event)" />
+  </div>
+
+  <ion-item lines="none">
+    <ion-input placeholder="Name" [(ngModel)]="user.name" readonly></ion-input>
+  </ion-item>
+
+  <ion-item lines="none">
+    <ion-datetime
+      placeholder="Date of Birth"
+      display-format="DD MMMM, YYYY"
+      presentation="date"
+      [(ngModel)]="user.dob"
+      [max]="maxDate"
+      [min]="minDate">
+    </ion-datetime>
+  </ion-item>
+
+  <ion-item lines="none">
+    <ion-select interface="popover" placeholder="Gender" [(ngModel)]="user.gender">
+      <ion-select-option value="male">Male</ion-select-option>
+      <ion-select-option value="female">Female</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <h4 class="section-title">Account Information</h4>
+
+  <ion-item lines="none">
+    <ion-input placeholder="Phone number" type="tel" [(ngModel)]="user.phone" readonly></ion-input>
+  </ion-item>
+
+  <ion-item lines="none">
+    <ion-input placeholder="IC Number" type="tel" [(ngModel)]="user.ic" maxlength="20"></ion-input>
+  </ion-item>
+
+  <ion-item lines="none">
+    <ion-input placeholder="Email" type="email" [(ngModel)]="user.email" readonly></ion-input>
+  </ion-item>
+
+  <h4 class="section-title">Address</h4>
+
+  <ion-item lines="none">
+    <ion-input placeholder="Street address" [(ngModel)]="user.address"></ion-input>
+  </ion-item>
+
+  <ion-item lines="none">
+    <ion-input placeholder="City" [(ngModel)]="user.city"></ion-input>
+  </ion-item>
+
+  <ion-item lines="none">
+    <ion-input placeholder="State" [(ngModel)]="user.state"></ion-input>
+  </ion-item>
+
+  <ion-item lines="none">
+    <ion-input placeholder="Postcode" type="tel" [(ngModel)]="user.postcode"></ion-input>
+  </ion-item>
+
+  <ion-button expand="block" class="save-btn" (click)="saveChanges()">Save Changes</ion-button>
+
+</ion-content>

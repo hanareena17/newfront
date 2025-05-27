@@ -1,0 +1,68 @@
+.splash-bg {
+    // --background: #7CFF1B;
+    --background: rgb(255, 111, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  ion-content::part(scroll) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .splash-wrapper {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  .splash-logo {
+    width: 255px;
+    height: auto;
+    animation: zoomIn 1.5s ease-in-out;
+    margin-bottom: 20px;
+  }
+  
+  .dots span {
+    font-size: 28px;
+    color: white;
+    animation: blink 1s infinite;
+    animation-delay: calc(0.2s * var(--i));
+  }
+  
+  .dots span:nth-child(1) { animation-delay: 0s; }
+  .dots span:nth-child(2) { animation-delay: 0.2s; }
+  .dots span:nth-child(3) { animation-delay: 0.4s; }
+  
+  @keyframes zoomIn {
+    0% {
+      transform: scale(0.2);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  
+  @keyframes blink {
+    0%, 80%, 100% {
+      opacity: 0;
+    }
+    40% {
+      opacity: 1;
+    }
+  }
+  

@@ -1,0 +1,28 @@
+<ion-content class="batteries-page">
+
+  <div class="section-header">
+    <h3>History of Battery Brands</h3>
+    <p>Let’s explore the journey behind each trusted car battery brand.</p>
+  </div>
+
+  <div class="battery-list">
+    <ion-card *ngFor="let battery of batteryBrands" class="battery-card">
+      <div class="card-top">
+        <img [src]="battery.image" alt="{{ battery.name }}" class="battery-img" />
+      </div>
+
+      <ion-card-header>
+        <ion-card-title>{{ battery.name }}</ion-card-title>
+        <p class="founded-year">Founded: {{ battery.founded }}</p>
+      </ion-card-header>
+
+      <ion-card-content>
+        <p class="history-text">{{ battery.history }}</p>
+        <div class="origin">
+          <strong>Origin:</strong> {{ battery.origin }}
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+</ion-content>

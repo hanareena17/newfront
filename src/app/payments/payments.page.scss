@@ -1,0 +1,35 @@
+ion-card {
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+    margin-bottom: 14px;
+  }
+  
+  ion-item {
+    --background: transparent;
+    --inner-padding-end: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  
+  p {
+    font-size: 13px;
+    color: gray;
+  }
+  
+  .positive {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .negative {
+    color: red;
+    font-weight: bold;
+  }
+  

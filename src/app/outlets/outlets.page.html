@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>All Outlets</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="outlets-grid-2col">
+    <div class="outlets-card-orange" *ngFor="let outlet of outlets">
+      <img [src]="outlet.img" class="outlet-img" />
+      <div class="outlet-details">
+        <h4>{{ outlet.name }}</h4>
+        <p>{{ outlet.address }}</p>
+      </div>
+    </div>
+  </div>
+</ion-content>

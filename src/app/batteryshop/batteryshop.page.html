@@ -1,0 +1,82 @@
+<ion-content class="ion-padding">
+
+  <ion-header class="header-shadow">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/home">
+        </ion-back-button>
+      </ion-buttons>
+
+      <ion-title>
+<div class="app-title-container">
+  <!-- <img src="assets/icon/logo.png" alt="logo" class="app-logo"/> -->
+  <img src="assets/icon/title.png" alt="title" class="app-title"/>
+  <!-- <span class="app-title">BateriKereta</span> -->
+</div>
+      </ion-title>
+      
+    </ion-toolbar>
+  </ion-header>
+
+
+  <ion-item lines="'none">
+    <ion-label>Sort by</ion-label>
+    <ion-select placeholder="Select" (ionChange)="sortProducts($event.detail.value)">
+      <ion-select-option value="priceLowHigh">Price: Low to High</ion-select-option>
+      <ion-select-option value="PriceHighLow">Price: High to Low</ion-select-option>
+      <ion-select-option value="ratingHighLow">Rating: High to Low</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-searchbar placeholder="Search battery brands or models..." animated (ionInput)="searchBatteries($event)"></ion-searchbar>
+
+  <!-- Brand scroll section -->
+  <div class="brand-scroll">
+    <ion-chip *ngFor="let brand of brands" outline class="brand-chip" (click)="filterByBrand(brand.name)">
+      <ion-avatar>
+        <ion-img [src]="brand.icon"></ion-img>
+      </ion-avatar>
+      <ion-label>{{ brand.name }}</ion-label>
+    </ion-chip>
+  </div>
+
+  <!-- Featured image -->
+  <ion-img src="assets/promo/membership.jpg" class="featured-img"></ion-img>
+
+  <!-- Section header -->
+  <div class="section-header">
+    <h2 class="section-title">Batteries</h2>
+    <ion-button fill="clear" size="small" class="see-all">See All</ion-button>
+  </div>
+
+  <!-- Battery Cards -->
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6" *ngFor="let product of popularProducts">
+        <ion-card class="product-card">
+          <ion-img [src]="product.image" class="product-img" (click)="goToDetails(product)"></ion-img>
+          <ion-card-header>
+            <ion-card-title class="product-name">{{ product.name }}</ion-card-title>
+          </ion-card-header>
+
+
+          <ion-card-content>
+            <div class="price-like">
+              <span class="price">RM {{ product.price }}</span>
+              <ion-icon
+                [name]="product.liked ? 'heart' : 'heart-outline'"
+                color="danger"
+                size="small"
+                (click)="toggleLike(product)">
+              </ion-icon>
+            
+
+
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

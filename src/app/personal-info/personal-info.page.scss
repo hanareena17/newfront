@@ -1,0 +1,56 @@
+.section-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    margin: 24px 0 8px;
+  }
+  
+  .profile-image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 60px;
+    object-fit: cover;
+    border: 3px solid #3a86ff;
+    margin-bottom: 10px;
+  }
+  
+  .change-photo-btn {
+    --color: #3a86ff;
+    font-size: 14px;
+    
+    ion-icon {
+      margin-right: 5px;
+    }
+  }
+  
+  ion-item {
+    margin-bottom: 12px;
+    --background: #f4f4f4;
+    border-radius: 14px;
+    padding: 6px 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  }
+  
+  ion-input, ion-datetime {
+    font-size: 14px;
+    --padding-start: 0;
+    --padding-end: 0;
+  }
+  
+  .save-btn {
+    margin-top: 30px;
+    --background: #3a86ff;
+    border-radius: 14px;
+    font-weight: 600;
+    text-transform: none;
+    font-size: 15px;
+    color: white;
+  }
+  

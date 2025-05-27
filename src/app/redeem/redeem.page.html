@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Redeem Rewards</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="points-info">
+    <h2>Your Points</h2>
+    <p>{{ userPoints }} pts</p>
+  </div>
+
+  <div class="rewards-grid">
+    <ion-card *ngFor="let item of rewards" class="reward-card">
+      <img [src]="item.img" (click)="openPreview(item.img)" />
+
+      <ion-card-header>
+        <ion-card-title>{{ item.name }}</ion-card-title>
+        <p>{{ item.points }} pts</p>
+      </ion-card-header>
+
+      <ion-button expand="block" style="--background: #ff6f00; color: white;" (click)="redeemItem(item)">
+        Redeem
+      </ion-button>
+    </ion-card>
+  </div>
+
+  <!-- Full Image Preview Modal -->
+  <!-- Full Image Preview Modal -->
+<ion-modal [isOpen]="showPreview" (didDismiss)="closePreview()">
+  <ng-template>
+    <ion-content class="ion-padding" style="--background: rgba(0,0,0,0.9)">
+      <img [src]="previewImage" class="full-voucher-img" (click)="closePreview()" />
+    </ion-content>
+  </ng-template>
+</ion-modal>
+

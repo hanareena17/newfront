@@ -1,0 +1,244 @@
+/* HEADER PROFILE */
+.header-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  background-color: #ff6f00;
+  padding: 16px;
+  border-radius: 12px;
+  color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.main-bg {
+  padding-bottom: 80px; // cukup untuk elak overlap dengan bottom-nav
+}
+
+.action-card {
+  margin-bottom: 12px;
+  border-radius: 14px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  ion-icon {
+    color: #ff6f00;
+    font-size: 24px;
+  }
+}
+
+
+// ion-fab {
+//   top: 20px;
+//   right: 20px;
+//   z-index: 999;
+// }
+
+
+.username {
+  color: white;
+}
+
+/* PROMO CARD */
+.promo-card.no-promo {
+  height: 120px;
+  background: #ffe0b2;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.promo-img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* SECTION HEADER */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 0 4px;
+}
+
+.view-more {
+  font-size: 13px;
+  color: #ff6f00;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-left: auto;
+}
+
+/* OUTLET CARD - HORIZONTAL SCROLL */
+.scroll-row {
+  display: flex;
+  overflow-x: auto;
+  gap: 12px;
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+}
+
+
+.outlet-row {
+  flex: 0 0 auto;
+  width: 170px;
+  background-color: #ff6f00;
+  color: white;
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.outlet-img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 6px;
+}
+
+.outlet-details h4 {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0 0 4px 0;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.outlet-details p {
+  font-size: 12px;
+  line-height: 1.3;
+  margin: 0;
+  text-align: center;
+}
+
+/* BATTERY CARD - MATCHING STYLE */
+.battery-card {
+  flex: 0 0 auto;
+  width: 170px;
+  background-color: #ff6f00;
+  color: white;
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.battery-img {
+  width: 100%;
+  height: 100px;
+  object-fit: contain;
+  // object-fit: cover;
+  transition: transform 0.3s ease;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.50);
+  
+}
+
+// .battery-img:hover {
+//   transform: scale(1.2);
+// }
+
+// bila tekan gambau, dia jadi besau
+
+.battery-name h4 {
+  font-size: 13px;
+  font-weight: bold;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+/* BOTTOM NAVIGATION */
+.bottom-nav-custom {
+  // position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #ff6f00;
+  padding: 10px 12px 5px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 100;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 12px;
+  color: white;
+}
+
+.icon-circle {
+  background: white;
+  border-radius: 50%;
+  padding: 10px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+ion-icon {
+  font-size: 18px;
+  color: black;
+}
+
+.call-button {
+  background: red;
+  border-radius: 50%;
+  padding: 18px;
+  transform: translateY(-20%);
+  box-shadow: 0 8px 16px rgba(255, 0, 0, 0.3);
+}
+
+.call-button ion-icon {
+  font-size: 24px;
+  color: white;
+}
+
+.draggable-bot {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 78px;
+  height: 78px;
+  z-index: 999;
+  border-radius: 50%;
+  // background-color: white;
+  // box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  cursor: grab;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: auto;
+
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    pointer-events: auto;
+  }
+
+
+
+
+
+}
+
+
+
+

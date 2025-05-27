@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Order History</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card *ngFor="let order of orderHistory" class="order-card">
+    <div class="order-meta">
+      <div>
+        <h2>#{{ order.code }}</h2>
+        <p>{{ order.date }}</p>
+      </div>
+    </div>
+
+    <div *ngFor="let item of order.items" class="item">
+      <img [src]="item.img" class="item-img" alt="Product image" />
+      <div class="item-content">
+        <h3>{{ item.name }}</h3>
+        <p class="item-meta">Qty: {{ item.qty }} | RM{{ item.price }}</p>
+        <div class="warranty-section">
+          <p>Status: <strong>{{ item.warrantyStatus }}</strong></p>
+          <p>Serial: {{ item.warrantyDetails.serialNumber }}</p>
+          <p>{{ item.warrantyDetails.startDate }} – {{ item.warrantyDetails.endDate }}</p>
+          <p><em>{{ item.warrantyDetails.notes }}</em></p>
+        </div>
+    
+      </div>
+    </div>
+    <ion-button expand="block" style="--background: #ff6f00; color: white;" (click)="goToInvoicePreview()" class="invoice-btn">
+      Invoice
+    </ion-button>
+  </ion-card>
+</ion-content>

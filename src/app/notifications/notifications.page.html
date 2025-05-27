@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/profile"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Notifications</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item *ngFor="let note of notifications" lines="inset">
+      <ion-icon [name]="note.icon" slot="start"></ion-icon>
+      <ion-label>
+        <h3>{{ note.title }}</h3>
+        <p>{{ note.time }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

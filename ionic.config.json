@@ -1,0 +1,10 @@
+{
+  "name": "bateriKereta",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+  "server": {
+    "port": 8000
+  }
+}

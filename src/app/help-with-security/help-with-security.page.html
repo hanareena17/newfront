@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/profile"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Help with Security</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <h4 class="section-title">Security Tips</h4>
+
+  <ion-list>
+    <ion-item *ngFor="let tip of tips" lines="inset">
+      <ion-icon [name]="tip.icon" slot="start"></ion-icon>
+      <ion-label>{{ tip.title }}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <h4 class="section-title">Need Help?</h4>
+
+  <ion-item lines="none">
+    <ion-label>
+      Contact our support team at <strong>security&#64;baterikereta.my</strong>
+    </ion-label>
+  </ion-item>
+
+</ion-content>

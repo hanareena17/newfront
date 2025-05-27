@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/profile"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Help Center</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h4 class="section-title">Frequently Asked Questions</h4>
+
+  <ion-list>
+    <ion-item *ngFor="let faq of faqs" lines="inset">
+      <ion-icon [name]="faq.icon" slot="start"></ion-icon>
+      <ion-label>{{ faq.question }}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <h4 class="section-title">Need More Help?</h4>
+  <ion-item lines="none">
+    <ion-label>
+      Contact our support team at <strong>support&#64;baterikereta.my</strong>
+    </ion-label>
+  </ion-item>
+</ion-content>

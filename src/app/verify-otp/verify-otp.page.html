@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Verify OTP</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="otp-container">
+    <h2>Enter OTP</h2>
+    <p>We sent a verification code to your email/phone. Please enter it below:</p>
+
+    <ion-item>
+      <ion-input 
+        type="text" 
+        [(ngModel)]="otp" 
+        name="otp" 
+        maxlength="6" 
+        placeholder="Enter OTP" 
+        clear-input>
+      </ion-input>
+    </ion-item>
+
+    <ion-button expand="block" (click)="verifyOtp()">Verify OTP</ion-button>
+
+    <div class="resend-otp">
+      <p *ngIf="otpExpired">OTP expired. <a (click)="resendOtp()">Resend OTP</a></p>
+    </div>
+  </div>
+</ion-content>

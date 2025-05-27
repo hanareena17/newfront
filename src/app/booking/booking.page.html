@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Book a Service</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h2>Select a Service</h2>
+
+  <ion-list>
+    <ion-radio-group [(ngModel)]="serviceType">
+      <ion-item>
+        <ion-label>Install Battery</ion-label>
+        <ion-radio slot="start" value="install"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Check Battery</ion-label>
+        <ion-radio slot="start" value="check"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+
+  <ion-item>
+    <ion-label position="stacked">Preferred Date</ion-label>
+    <ion-datetime
+      presentation="date"
+      [(ngModel)]="preferredDate"
+      placeholder="Select date"
+    ></ion-datetime>
+  </ion-item>
+  
+  <ion-item class="centered-time">
+    <ion-label position="stacked">Preferred Time</ion-label>
+    <ion-datetime
+      presentation="time"
+      [(ngModel)]="preferredTime"
+      placeholder="Select time"
+    ></ion-datetime>
+  </ion-item>
+  
+  
+
+  <ion-card *ngIf="serviceType || notes || preferredDate || preferredTime">
+    <ion-card-header>
+      <ion-card-title>Booking Summary</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Service:</strong> {{ serviceType | titlecase }}</p>
+      <p><strong>Date:</strong> {{ preferredDate || 'Not selected' }}</p>
+      <p><strong>Time:</strong> {{ preferredTime || 'Not selected' }}</p>
+      <p><strong>Location:</strong> {{ location || 'Not provided' }}</p>
+      <p><strong>Notes:</strong> {{ notes || 'None' }}</p>
+    </ion-card-content>
+  </ion-card>
+  
+  <ion-item lines="none">
+    <ion-label position="stacked">Additional Notes (optional)</ion-label>
+    <ion-textarea [(ngModel)]="notes" placeholder="e.g. Preferred time or location"></ion-textarea>
+  </ion-item>
+
+  <ion-button expand="block" style="--background: #ff6f00; color: white;" (click)="submitBooking()">
+    Submit Booking </ion-button>

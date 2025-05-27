@@ -1,0 +1,77 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/profile"></ion-back-button> <!-- Adjust defaultHref as needed -->
+    </ion-buttons>
+    <ion-title>Car Information</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <form [formGroup]="carForm" (ngSubmit)="addCar()">
+    <ion-list>
+      <ion-item>
+        <ion-input
+          label="Car Plate Number"
+          labelPlacement="stacked"
+          formControlName="license_plate"
+          placeholder="Enter plate number"
+          type="text"
+          required
+          [class.ion-invalid]="license_plate?.invalid && license_plate?.touched"
+          [class.ion-valid]="license_plate?.valid && license_plate?.touched">
+        </ion-input>
+      </ion-item>
+      <ion-note slot="error" *ngIf="license_plate?.invalid && license_plate?.touched">
+        <div *ngIf="license_plate?.errors?.['required']">Plate number is required.</div>
+        <div *ngIf="license_plate?.errors?.['minlength']">Plate number is too short.</div>
+        <div *ngIf="license_plate?.errors?.['maxlength']">Plate number is too long.</div>
+      </ion-note>
+
+      <ion-item>
+        <ion-select
+          label="Select Car Brand"
+          labelPlacement="stacked"
+          formControlName="car_brand_id"
+          placeholder="Choose brand"
+          okText="Okay"
+          cancelText="Dismiss"
+          required
+          [class.ion-invalid]="car_brand_id?.invalid && car_brand_id?.touched"
+          [class.ion-valid]="car_brand_id?.valid && car_brand_id?.touched">
+          <ion-select-option *ngFor="let brand of carBrands$ | async" [value]="brand.id">
+            {{ brand.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-note slot="error" *ngIf="car_brand_id?.invalid && car_brand_id?.touched">
+        Car brand is required.
+      </ion-note>
+
+      <ion-item>
+        <ion-select
+          label="Select Car Model"
+          labelPlacement="stacked"
+          formControlName="car_model_id"
+          placeholder="Choose model"
+          okText="Okay"
+          cancelText="Dismiss"
+          required
+          [disabled]="isCarModelSelectDisabled"
+          [class.ion-invalid]="car_model_id?.invalid && car_model_id?.touched"
+          [class.ion-valid]="car_model_id?.valid && car_model_id?.touched">
+          <ion-select-option *ngFor="let model of carModels$ | async" [value]="model.id">
+            {{ model.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-note slot="error" *ngIf="car_model_id?.invalid && car_model_id?.touched && !carForm.get('car_model_id')?.disabled">
+        Car model is required.
+      </ion-note>
+    </ion-list>
+
+    <ion-button type="submit" expand="block" class="ion-margin-top" [disabled]="carForm.invalid">
+      Add Car
+    </ion-button>
+  </form>
+</ion-content>

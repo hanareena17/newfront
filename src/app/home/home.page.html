@@ -1,0 +1,149 @@
+<ion-content class="ion-padding main-bg" fullscreen="true">
+  
+
+  <!-- USER PROFILE SECTION (only one, in the orange card) -->
+  <div class="header-container" (click)="goToProfile()" style="cursor: pointer;">
+    <ion-avatar slot="start" *ngIf="getProfileImage()">
+      <img [src]="getProfileImage()" alt="Profile Picture" />
+    </ion-avatar>
+    <!-- Add a placeholder or adjust styling if no image -->
+    <div class="user-info" [class.no-avatar]="!getProfileImage()">
+      <h2>Welcome, <span class="username">{{ user?.name || 'Guest' }}</span></h2>
+      <p>Points: {{ user?.points || 0 }}</p>
+    </div>
+  </div>
+
+  <!-- PROMO BANNER -->
+  <ion-card class="promo-card" *ngIf="promoBanner; else noPromo">
+    <img [src]="promoBanner" class="promo-img" />
+  </ion-card>
+  <ng-template #noPromo>
+    <div class="promo-card no-promo">
+      <p>No promo at the moment</p>
+    </div>
+  </ng-template>
+
+  <!-- Services Section -->
+  <ion-card class="action-card" (click)="goToBooking()">
+    <ion-item lines="none">
+      <ion-icon name="calendar-outline" slot="start"></ion-icon>
+      <ion-label>
+        <h2>Book a Service</h2>
+        <p>Make a quick appointment</p>
+      </ion-label>
+    </ion-item>
+  </ion-card>
+
+  <ion-card class="action-card" (click)="goToRedeem()">
+    <ion-item lines="none">
+      <ion-icon name="gift-outline" slot="start"></ion-icon>
+      <ion-label>
+        <h2>Redeem Points</h2>
+        <p>Use your points for discounts!</p>
+      </ion-label>
+    </ion-item>
+  </ion-card>
+
+  <ion-card class="action-card" (click)="goToTrackTechnician()">
+    <ion-item lines="none">
+      <ion-icon name="navigate-outline" slot="start"></ion-icon>
+      <ion-label>
+        <h2>Track Technician</h2>
+        <p>See where your assigned tech is</p>
+      </ion-label>
+    </ion-item>
+  </ion-card>
+
+  <ion-card class="action-card" (click)="goToHistory()">
+    <ion-item lines="none">
+      <ion-icon name="time-outline" slot="start"></ion-icon>
+      <ion-label>
+        <h2>View History</h2>
+        <p>See your previous orders</p>
+      </ion-label>
+    </ion-item>
+  </ion-card>
+
+  <!-- Nearby Outlets -->
+  <div class="section-header">
+    <h3>Nearby Outlets</h3>
+    <span class="view-more" (click)="navigateToAllOutlets()">More</span>
+  </div>
+
+  <div class="scroll-row">
+    <div class="outlet-row" *ngFor="let outlet of outlets.slice(0, 4)">
+      <img [src]="outlet.img" class="outlet-img" />
+      <div class="outlet-details">
+        <h4>{{ outlet.name }}</h4>
+        <p>{{ outlet.address }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Battery Section -->
+  <div class="section-header">
+    <h3>Battery</h3>
+    <span class="view-more" (click)="goToBatteries()">More</span>
+
+  </div>
+
+  <div class="scroll-row">
+    <div class="battery-card" *ngFor="let battery of batteries">
+      <img [src]="battery.img" class="battery-img" />
+      <div class="battery-name">
+        <h4>{{ battery.name }}</h4>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav-custom">
+    <div class="nav-item">
+      <div class="icon-circle" (click)="goToBatteryShop()">
+        <img src="assets/battery.svg" style="width: 20px;" />
+      </div>
+      <span>Battery</span>
+    </div>
+
+    <div class="nav-item">
+      <div class="icon-circle">
+        <ion-icon name="time-outline"></ion-icon>
+      </div>
+      <span>History</span>
+    </div>
+
+    <a href="tel:0123456789" class="call-button">
+      <ion-icon name="call-outline"></ion-icon>
+    </a>
+
+    <div class="nav-item">
+      <div class="icon-circle">
+        <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+      </div>
+      <span>Chat</span>
+    </div>
+
+    <div class="nav-item">
+      <div class="icon-circle">
+        <ion-icon name="shield-checkmark-outline"></ion-icon>
+      </div>
+      <span>Warranty</span>
+    </div>
+  </div>
+
+  <!-- Draggable Chatbot -->
+  <div
+    class="draggable-bot"
+    #chatBot
+    (mousedown)="startDrag($event)"
+    (touchstart)="startDrag($event)"
+    (mouseup)="handleBotClick()"
+    (touchend)="handleBotClick()"
+    
+   
+  >
+    <img src="assets/icon/bot.png" alt="Chat Bot" />
+  </div>
+
+</ion-content>
+<!-- (click)="goToChatBot()" -->
