@@ -67,12 +67,25 @@
   <!-- Nearby Outlets -->
   <div class="section-header">
     <h3>Nearby Outlets</h3>
-    <span class="view-more" (click)="navigateToAllOutlets()">More</span>
+    <span class="view-more" (click)="navigateToAllOutlets()">MORE</span>
   </div>
 
-  <div class="scroll-row">
-    <div class="outlet-row" *ngFor="let outlet of outlets.slice(0, 4)">
-      <img [src]="outlet.img" class="outlet-img" />
+  <!-- Loading spinner -->
+  <div class="loading-container" *ngIf="outletsLoading">
+    <ion-spinner name="circles"></ion-spinner>
+    <p>Loading outlets...</p>
+  </div>
+
+  <!-- Error message -->
+  <div class="error-container" *ngIf="outletsError">
+    <p class="error-message">{{ outletsError }}</p>
+    <ion-button (click)="loadOutlets()" size="small">Try Again</ion-button>
+  </div>
+
+  <!-- Outlets -->
+  <div class="scroll-row" *ngIf="!outletsLoading && !outletsError">
+    <div class="outlet-row" *ngFor="let outlet of outlets">
+      <img [src]="outlet.image_url" class="outlet-img" />
       <div class="outlet-details">
         <h4>{{ outlet.name }}</h4>
         <p>{{ outlet.address }}</p>

@@ -5,13 +5,55 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <div class="outlets-grid-2col">
-    <div class="outlets-card-orange" *ngFor="let outlet of outlets">
-      <img [src]="outlet.img" class="outlet-img" />
-      <div class="outlet-details">
-        <h4>{{ outlet.name }}</h4>
-        <p>{{ outlet.address }}</p>
+  <!-- Loading spinner -->
+  <div class="loading-container" *ngIf="loading">
+    <ion-spinner name="circles"></ion-spinner>
+    <p>Loading outlets...</p>
+  </div>
+
+  <!-- Error message -->
+  <div class="error-container" *ngIf="error">
+    <p class="error-message">{{ error }}</p>
+    <ion-button (click)="loadOutlets()" size="small">Try Again</ion-button>
+  </div>
+
+  <!-- Outlets by district -->
+  <div *ngIf="!loading && !error && outlets.length > 0">
+    <div *ngFor="let district of districts" class="district-section">
+      <h3 class="district-title">{{ district }}</h3>
+      
+      <div class="outlets-grid-2col">
+        <div class="outlets-card-orange" *ngFor="let outlet of outletsByDistrict[district]">
+          <img [src]="outlet.image_url" class="outlet-img" />
+          <div class="outlet-details">
+            <h4>{{ outlet.name }}</h4>
+            <p>{{ outlet.address }}</p>
+            
+            <div class="map-buttons">
+              <ion-button
+                *ngIf="outlet.waze_link"
+                (click)="openWaze(outlet)"
+                size="small"
+                color="tertiary">
+                Waze
+              </ion-button>
+              
+              <ion-button
+                *ngIf="outlet.google_maps_link"
+                (click)="openGoogleMaps(outlet)"
+                size="small"
+                color="secondary">
+                Google Maps
+              </ion-button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
+
+  <!-- No outlets message -->
+  <div class="no-data-container" *ngIf="!loading && !error && outlets.length === 0">
+    <p>No outlets found.</p>
   </div>
 </ion-content>

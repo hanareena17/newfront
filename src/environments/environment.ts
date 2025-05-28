@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://127.0.0.1:8100/api' // adjust as needed
+  apiUrl: 'http://127.0.0.1:8000/api' // Laravel backend URL
 };
 /*
  * For easier debugging in development mode, you can import the following file
