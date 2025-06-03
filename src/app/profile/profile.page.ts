@@ -20,8 +20,7 @@ import {
   IonButtons, 
   IonInput,
   IonDatetime,
-
-
+  AlertController
 } from '@ionic/angular/standalone';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -68,7 +67,8 @@ export class ProfilePage implements OnInit {
   constructor(
     private authService: AuthService,
     private userProfileService: UserProfileService,
-    private router: Router
+    private router: Router,
+    private alertController: AlertController
   ) {}
 
   goToPersonalInfo() {
@@ -86,8 +86,8 @@ export class ProfilePage implements OnInit {
     this.router.navigate(['/notifications']);
   }
 
-  goToPrivacy() {
-    this.router.navigate(['/privacy']);
+  goToChangePassword() {
+    this.router.navigate(['/change-password']);
   }
 
   goToHelpCenter() {
@@ -102,7 +102,21 @@ export class ProfilePage implements OnInit {
     this.router.navigate(['/terms-of-use']);
   }
   
+    goToPrivacyPolicy() {
+    this.router.navigate(['/privacy-policy']);
+  }
 
+      goToAccountAbout() {
+    this.router.navigate(['/account-about']);
+  }
+
+        goToAppUpdates() {
+    this.router.navigate(['/app-updates']);
+  }
+
+          goToResetPassword() {
+    this.router.navigate(['/reset-password']);
+  }
 
   ngOnInit() {
     this.loadUserProfile();
@@ -126,6 +140,7 @@ export class ProfilePage implements OnInit {
         // Handle case where profile data might be missing but user is logged in
         this.user.name = this.user.name || 'User'; // Fallback name
       }
+
 
       // Fetch points
       if (this.authService.isAuthenticated()) {
@@ -170,4 +185,71 @@ export class ProfilePage implements OnInit {
   }
 
   // handleImageError is no longer needed
+
+  async confirmDeleteAccount() {
+    const alert = await this.alertController.create({
+      header: 'Delete Account',
+      message: 'Are you sure you want to delete your account? This action cannot be undone.',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary'
+        },
+        {
+          text: 'Delete',
+          role: 'destructive',
+          handler: () => {
+            this.deleteAccount();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  async deleteAccount() {
+    try {
+      // Show loading alert
+      const loadingAlert = await this.alertController.create({
+        message: 'Deleting your account...',
+        backdropDismiss: false
+      });
+      await loadingAlert.present();
+
+      // Call the delete account API
+      await this.userProfileService.deleteAccount().toPromise();
+
+      // Dismiss loading alert
+      await loadingAlert.dismiss();
+
+      // Show success message
+      const successAlert = await this.alertController.create({
+        header: 'Account Deleted',
+        message: 'Your account has been successfully deleted.',
+        buttons: [
+          {
+            text: 'OK',
+            handler: () => {
+              this.router.navigate(['/login']);
+            }
+          }
+        ]
+      });
+      await successAlert.present();
+
+    } catch (error) {
+      console.error('Error deleting account:', error);
+      
+      // Show error message
+      const errorAlert = await this.alertController.create({
+        header: 'Error',
+        message: 'Failed to delete account. Please try again later.',
+        buttons: ['OK']
+      });
+      await errorAlert.present();
+    }
+  }
 }
+

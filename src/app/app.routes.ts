@@ -87,11 +87,7 @@ export const routes: Routes = [
     path: 'notifications',
     loadComponent: () => import('./notifications/notifications.page').then( m => m.NotificationsPage)
   },
-  {
-    path: 'privacy',
-   loadComponent: () => import('./privacy/privacy.page').then(m => m.PrivacyPage)
-
-  },
+  
   {
     path: 'to-help-center',
     loadComponent: () => import('./to-help-center/to-help-center.page').then( m => m.ToHelpCenterPage)
@@ -145,6 +141,22 @@ export const routes: Routes = [
   {
     path: 'forgot-password',
     loadComponent: () => import('./forgot-password/forgot-password.page').then( m => m.ForgotPasswordPage)
+  },
+  {
+    path: 'privacy-policy',
+    loadComponent: () => import('./privacy-policy/privacy-policy.page').then( m => m.PrivacyPolicyPage)
+  },
+  {
+    path: 'account-about',
+    loadComponent: () => import('./account-about/account-about.page').then( m => m.AccountAboutPage)
+  },
+  {
+    path: 'app-updates',
+    loadComponent: () => import('./app-updates/app-updates.page').then( m => m.AppUpdatesPage)
+  },
+  {
+    path: 'change-password',
+    loadComponent: () => import('./change-password/change-password.page').then(m => m.ChangePasswordPage)
   },
 
 

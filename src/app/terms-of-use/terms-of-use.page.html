@@ -1,31 +1,102 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Terma Penggunaan</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/account"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Terms of Use</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <h2>Selamat Datang!</h2>
-  <p>
-    Dengan menggunakan aplikasi ini, anda bersetuju dengan terma-terma berikut.
-  </p>
+  <div class="terms-container">
+    <h2 class="ion-text-center">Terms & Conditions</h2>
+    <p class="ion-text-center subtitle">
+      Please read carefully before using the BateriKereta application
+    </p>
 
-  <h3>1. Penggunaan Aplikasi</h3>
-  <p>
-    Sila gunakan aplikasi ini secara bertanggungjawab dan mengikut undang-undang.
-  </p>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>1. Introduction</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>
+          BateriKereta is a vehicle battery service platform that provides battery inspection and replacement services. By using this application, you agree to comply with all the terms and conditions set forth.
+        </p>
+      </ion-card-content>
+    </ion-card>
 
-  <h3>2. Akaun & Data</h3>
-  <p>
-    Segala data peribadi anda akan dirahsiakan dan hanya digunakan untuk tujuan aplikasi ini.
-  </p>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>2. Application Usage</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ul>
+          <li>You must be 18 years or older to use this application</li>
+          <li>You are responsible for ensuring the information provided is accurate and current</li>
+          <li>You may not use the application for illegal or unauthorized purposes</li>
+          <li>You may not attempt to access systems or data without authorization</li>
+        </ul>
+      </ion-card-content>
+    </ion-card>
 
-  <h3>3. Perubahan Terma</h3>
-  <p>
-    Kami boleh mengubah suai terma ini dari semasa ke semasa.
-  </p>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>3. Account & Security</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ul>
+          <li>You are responsible for maintaining the security of your account</li>
+          <li>All activities conducted through your account are your responsibility</li>
+          <li>Report any suspicious activity on your account immediately</li>
+          <li>We reserve the right to suspend or terminate accounts that violate terms</li>
+        </ul>
+      </ion-card-content>
+    </ion-card>
 
-  <ion-button expand="block" color="success">
-    Setuju & Teruskan
-  </ion-button>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>4. Privacy & Data</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ul>
+          <li>We collect and process personal data in accordance with our Privacy Policy</li>
+          <li>Your data will be used for service purposes and application improvements</li>
+          <li>We will not share your data with third parties without your consent</li>
+          <li>You can request to access or delete your data at any time</li>
+        </ul>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>5. Services & Payments</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ul>
+          <li>Service prices are as displayed in the application</li>
+          <li>Payments must be made according to the specified methods</li>
+          <li>We reserve the right to change service prices with prior notice</li>
+          <li>Cancellation and refund policies are according to the specified terms</li>
+        </ul>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>6. Terms Changes</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>
+          We reserve the right to modify these terms at any time. Changes will be notified through the application or email. Continued use of the application after changes means you agree to the new terms.
+        </p>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="ion-padding-vertical">
+      <ion-button expand="block" color="success" (click)="acceptTerms()">
+        <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+        I Agree & Continue
+      </ion-button>
+    </div>
+  </div>
 </ion-content>

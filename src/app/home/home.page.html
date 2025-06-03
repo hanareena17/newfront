@@ -67,24 +67,11 @@
   <!-- Nearby Outlets -->
   <div class="section-header">
     <h3>Nearby Outlets</h3>
-    <span class="view-more" (click)="navigateToAllOutlets()">MORE</span>
+    <span class="view-more" (click)="navigateToAllOutlets()">More</span>
   </div>
 
-  <!-- Loading spinner -->
-  <div class="loading-container" *ngIf="outletsLoading">
-    <ion-spinner name="circles"></ion-spinner>
-    <p>Loading outlets...</p>
-  </div>
-
-  <!-- Error message -->
-  <div class="error-container" *ngIf="outletsError">
-    <p class="error-message">{{ outletsError }}</p>
-    <ion-button (click)="loadOutlets()" size="small">Try Again</ion-button>
-  </div>
-
-  <!-- Outlets -->
-  <div class="scroll-row" *ngIf="!outletsLoading && !outletsError">
-    <div class="outlet-row" *ngFor="let outlet of outlets">
+  <div class="scroll-row">
+    <div class="outlet-row" *ngFor="let outlet of outlets.slice(0, 4)">
       <img [src]="outlet.image_url" class="outlet-img" />
       <div class="outlet-details">
         <h4>{{ outlet.name }}</h4>
@@ -94,17 +81,16 @@
   </div>
 
   <!-- Battery Section -->
-  <div class="section-header">
-    <h3>Battery</h3>
+   <div class="section-header">
+    <h3>Battery Brands</h3>
     <span class="view-more" (click)="goToBatteries()">More</span>
-
   </div>
 
   <div class="scroll-row">
-    <div class="battery-card" *ngFor="let battery of batteries">
-      <img [src]="battery.img" class="battery-img" />
+    <div class="battery-card" *ngFor="let batteryBrand of batteryBrands.slice(0, 4)">
+      <img [src]="batteryBrand.logo_url || 'assets/icon/favicon.png'" class="battery-img" [alt]="batteryBrand.name" />
       <div class="battery-name">
-        <h4>{{ battery.name }}</h4>
+        <h4>{{ batteryBrand.name }}</h4>
       </div>
     </div>
   </div>

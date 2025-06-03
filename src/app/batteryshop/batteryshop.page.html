@@ -1,82 +1,157 @@
+<ion-header class="header-shadow">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <div class="app-title-container">
+        <img src="assets/icon/title.png" alt="title" class="app-title"/>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content class="ion-padding">
+  <!-- Search Bar -->
+  <ion-searchbar
+    placeholder="Search batteries..."
+    animated
+    debounce="500"
+    [(ngModel)]="searchTerm"
+    (ionInput)="onSearchChange($event)">
+  </ion-searchbar>
 
-  <ion-header class="header-shadow">
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-back-button defaultHref="/home">
-        </ion-back-button>
-      </ion-buttons>
-
-      <ion-title>
-<div class="app-title-container">
-  <!-- <img src="assets/icon/logo.png" alt="logo" class="app-logo"/> -->
-  <img src="assets/icon/title.png" alt="title" class="app-title"/>
-  <!-- <span class="app-title">BateriKereta</span> -->
-</div>
-      </ion-title>
-      
-    </ion-toolbar>
-  </ion-header>
-
-
-  <ion-item lines="'none">
-    <ion-label>Sort by</ion-label>
-    <ion-select placeholder="Select" (ionChange)="sortProducts($event.detail.value)">
-      <ion-select-option value="priceLowHigh">Price: Low to High</ion-select-option>
-      <ion-select-option value="PriceHighLow">Price: High to Low</ion-select-option>
-      <ion-select-option value="ratingHighLow">Rating: High to Low</ion-select-option>
-    </ion-select>
-  </ion-item>
-
-  <ion-searchbar placeholder="Search battery brands or models..." animated (ionInput)="searchBatteries($event)"></ion-searchbar>
-
-  <!-- Brand scroll section -->
-  <div class="brand-scroll">
-    <ion-chip *ngFor="let brand of brands" outline class="brand-chip" (click)="filterByBrand(brand.name)">
-      <ion-avatar>
-        <ion-img [src]="brand.icon"></ion-img>
-      </ion-avatar>
-      <ion-label>{{ brand.name }}</ion-label>
-    </ion-chip>
-  </div>
-
-  <!-- Featured image -->
-  <ion-img src="assets/promo/membership.jpg" class="featured-img"></ion-img>
-
-  <!-- Section header -->
-  <div class="section-header">
-    <h2 class="section-title">Batteries</h2>
-    <ion-button fill="clear" size="small" class="see-all">See All</ion-button>
-  </div>
-
-  <!-- Battery Cards -->
+  <!-- Filters -->
   <ion-grid>
     <ion-row>
-      <ion-col size="6" *ngFor="let product of popularProducts">
-        <ion-card class="product-card">
-          <ion-img [src]="product.image" class="product-img" (click)="goToDetails(product)"></ion-img>
+      <ion-col size="12" size-md="4">
+        <ion-item lines="none">
+          <ion-label>Brand</ion-label>
+          <ion-select placeholder="All Brands" [(ngModel)]="selectedBrandId" (ionChange)="onBrandChange($event)">
+            <ion-select-option [value]="null">All Brands</ion-select-option>
+            <ion-select-option *ngFor="let brand of batteryBrands" [value]="brand.id">
+              {{ brand.name }}
+            </ion-select-option>
+          </ion-select>
+          <ion-spinner *ngIf="isLoadingBrands" name="crescent" color="primary" slot="end"></ion-spinner>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" size-md="4">
+        <ion-item lines="none">
+          <ion-label>Category</ion-label>
+          <ion-select placeholder="All Categories" [(ngModel)]="selectedCategoryId" (ionChange)="onCategoryChange($event)">
+            <ion-select-option [value]="null">All Categories</ion-select-option>
+            <ion-select-option *ngFor="let category of productCategories" [value]="category.id">
+              {{ category.name }}
+            </ion-select-option>
+          </ion-select>
+          <ion-spinner *ngIf="isLoadingCategories" name="crescent" color="primary" slot="end"></ion-spinner>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" size-md="4">
+        <ion-item lines="none">
+          <ion-label>Sort by</ion-label>
+          <ion-select placeholder="Relevance" (ionChange)="sortProducts($event.detail.value)">
+            <ion-select-option value="nameAZ">Name: A to Z</ion-select-option>
+            <ion-select-option value="nameZA">Name: Z to A</ion-select-option>
+            <ion-select-option value="priceLowHigh">Price: Low to High</ion-select-option>
+            <ion-select-option value="priceHighLow">Price: High to Low</ion-select-option>
+            <!-- Add rating sort if available -->
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Suggested Batteries Section -->
+  <div *ngIf="authService.isAuthenticated() && suggestedProducts.length > 0">
+    <ion-list-header>
+      <ion-label color="primary">
+        <h2 class="section-title">Recommended For Your Cars</h2>
+      </ion-label>
+    </ion-list-header>
+    <div *ngIf="isLoadingSuggestions" class="ion-text-center ion-padding">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <p>Loading suggestions...</p>
+    </div>
+    <ion-grid *ngIf="!isLoadingSuggestions && suggestedProducts.length > 0">
+      <ion-row>
+        <ion-col size="6" size-md="4" size-lg="3" *ngFor="let product of suggestedProducts">
+          <ion-card class="product-card" (click)="goToDetails(product)">
+            <ion-img [src]="getProductImageUrl(product.image_url)" class="product-img" [alt]="product.name"></ion-img>
+            <ion-card-header>
+              <ion-card-title class="product-name">{{ product.name }}</ion-card-title>
+              <p class="product-brand">{{ product.battery_brand?.name || 'Brand Unknown' }}</p>
+            </ion-card-header>
+            <ion-card-content>
+              <div class="price-like">
+                <span class="price">RM {{ product.price | number:'1.2-2' }}</span>
+                <ion-icon
+                  [name]="isLiked(product.id) ? 'heart' : 'heart-outline'"
+                  [color]="isLiked(product.id) ? 'danger' : 'medium'"
+                  (click)="$event.stopPropagation(); toggleLike(product)">
+                </ion-icon>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <div *ngIf="!isLoadingSuggestions && suggestedProducts.length === 0 && authService.isAuthenticated()" class="ion-padding ion-text-center">
+       <ion-text color="medium"><p>No specific suggestions for your cars right now. Add your car details in your profile for better recommendations!</p></ion-text>
+    </div>
+  </div>
+
+
+  <!-- All Products Section Header -->
+  <ion-list-header>
+    <ion-label color="primary">
+      <h2 class="section-title">All Batteries</h2>
+    </ion-label>
+  </ion-list-header>
+
+  <!-- Loading Indicator for All Products -->
+  <div *ngIf="isLoadingProducts" class="ion-text-center ion-padding">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+    <p>Loading batteries...</p>
+  </div>
+
+  <!-- Product Grid for All/Filtered Products -->
+  <ion-grid *ngIf="!isLoadingProducts && filteredProducts.length > 0">
+    <ion-row>
+      <ion-col size="6" size-md="4" size-lg="3" *ngFor="let product of filteredProducts">
+        <ion-card class="product-card" (click)="goToDetails(product)">
+          <ion-img [src]="getProductImageUrl(product.image_url)" class="product-img" [alt]="product.name"></ion-img>
           <ion-card-header>
             <ion-card-title class="product-name">{{ product.name }}</ion-card-title>
+            <p class="product-brand">{{ product.battery_brand?.name || 'Brand Unknown' }}</p>
           </ion-card-header>
-
-
           <ion-card-content>
             <div class="price-like">
-              <span class="price">RM {{ product.price }}</span>
+              <span class="price">RM {{ product.price | number:'1.2-2' }}</span>
               <ion-icon
-                [name]="product.liked ? 'heart' : 'heart-outline'"
-                color="danger"
-                size="small"
-                (click)="toggleLike(product)">
+                [name]="isLiked(product.id) ? 'heart' : 'heart-outline'"
+                [color]="isLiked(product.id) ? 'danger' : 'medium'"
+                (click)="$event.stopPropagation(); toggleLike(product)">
               </ion-icon>
-            
-
-
             </div>
+            <!-- You can add more details like CCA, Warranty here if available -->
+            <!-- <p class="product-spec">CCA: {{ product.cca || 'N/A' }}</p> -->
+            <!-- <p class="product-spec">Warranty: {{ product.warranty_period_months || 'N/A' }} months</p> -->
           </ion-card-content>
         </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <!-- Empty State for Filtered Products -->
+  <div *ngIf="!isLoadingProducts && filteredProducts.length === 0" class="ion-padding ion-text-center">
+    <ion-icon name="search-outline" size="large" color="medium"></ion-icon>
+    <ion-text color="medium">
+      <h3>No Batteries Found</h3>
+      <p>Try adjusting your search or filters.</p>
+    </ion-text>
+    <ion-button fill="clear" (click)="loadInitialData()">Reset Filters</ion-button>
+  </div>
 
 </ion-content>

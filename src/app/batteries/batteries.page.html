@@ -1,28 +1,52 @@
-<ion-content class="batteries-page">
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>All Battery Brands</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <div class="section-header">
-    <h3>History of Battery Brands</h3>
-    <p>Let’s explore the journey behind each trusted car battery brand.</p>
+<ion-content class="ion-padding">
+  <!-- Loading spinner -->
+  <div class="loading-container" *ngIf="loading">
+    <ion-spinner name="circles"></ion-spinner>
+    <p>Loading battery brands...</p>
   </div>
 
-  <div class="battery-list">
-    <ion-card *ngFor="let battery of batteryBrands" class="battery-card">
-      <div class="card-top">
-        <img [src]="battery.image" alt="{{ battery.name }}" class="battery-img" />
+  <!-- Error message -->
+  <div class="error-container" *ngIf="error">
+    <p class="error-message">{{ error }}</p>
+    <ion-button (click)="retryLoad()" size="small">Try Again</ion-button>
+  </div>
+
+  <!-- Products by battery brands -->
+  <div *ngIf="!loading && !error && batteryBrands.length > 0">
+    <div *ngFor="let brand of batteryBrands" class="brand-section">
+      <div class="brand-header">
+        <img [src]="getBrandImage(brand)" class="brand-logo" />
+        <h3 class="brand-title">{{ brand.name }}</h3>
       </div>
-
-      <ion-card-header>
-        <ion-card-title>{{ battery.name }}</ion-card-title>
-        <p class="founded-year">Founded: {{ battery.founded }}</p>
-      </ion-card-header>
-
-      <ion-card-content>
-        <p class="history-text">{{ battery.history }}</p>
-        <div class="origin">
-          <strong>Origin:</strong> {{ battery.origin }}
+      
+      <!-- Show products for this brand -->
+      <div class="products-grid-2col" *ngIf="productsByBrand[brand.id] && productsByBrand[brand.id].length > 0">
+        <div class="product-card-orange" *ngFor="let product of productsByBrand[brand.id]" (click)="navigateToProduct(product)">
+          <img [src]="product.image_url || 'assets/icon/favicon.png'" class="product-img" [alt]="product.name"/>
+          <div class="product-details">
+            <h4>{{ product.name }}</h4>
+            <p class="product-price">RM {{ product.price | number:'1.2-2' }}</p>
+            <p class="product-description" *ngIf="product.description">{{ product.description }}</p>
+            <p class="product-capacity" *ngIf="product.capacity_ah">Capacity: {{ product.capacity_ah }} Ah</p>
+          </div>
         </div>
-      </ion-card-content>
-    </ion-card>
+      </div>
+      
+      <!-- No products message for this brand -->
+      <div class="no-products-message" *ngIf="!productsByBrand[brand.id] || productsByBrand[brand.id].length === 0">
+        <p>No products available for {{ brand.name }}</p>
+      </div>
+    </div>
   </div>
 
+  <!-- No battery brands message -->
+  <div class="no-data-container" *ngIf="!loading && !error && batteryBrands.length === 0">
+    <p>No battery brands found.</p>
+  </div>
 </ion-content>

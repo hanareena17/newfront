@@ -12,6 +12,8 @@ import { SafePropertyRead } from '@angular/compiler';
 import { AuthService } from '../services/auth.service';
 import { UserProfileService } from '../services/user-profile.service';
 import { OutletService, Outlet } from '../services/outlet.service';
+import { BatteryBrandService, BatteryBrand } from '../services/battery-brand.service'; // Removed Product
+import { Product } from '../services/product.service'; // Added Product import from product.service
 
 
 @Component({
@@ -36,6 +38,7 @@ export class HomePage implements OnInit {
     },
     points: 0
   };
+  
   promoBanner = '';
   loading = true;
   outletsLoading = false;
@@ -43,26 +46,25 @@ export class HomePage implements OnInit {
   outlets: Outlet[] = [];
   public moved = false;
 
+  batteriesLoading = false;
+  batteriesError: string | null = null;
+  batteryBrands: BatteryBrand[] = [];
+
   @ViewChild('chatBot', { static: false }) chatBotRef!: ElementRef;
 
   constructor(
     private http: HttpClient,
     private authService: AuthService,
     private userProfileService: UserProfileService,
+    private batteryService: BatteryBrandService,
     private outletService: OutletService,
     private router: Router
   ) {}
 
-  // onBotClicked() {
-  //   if (!this.moved) {
-  //     this.goToChatBot();
-  //   }
-  // }
-
-  
   ngOnInit() {
     this.loadUserProfileAndPoints();
     this.loadOutlets();
+    this.loadBatteryBrands();
   }
 
   loadOutlets() {
@@ -85,6 +87,28 @@ export class HomePage implements OnInit {
         },
         complete: () => {
           this.outletsLoading = false;
+        }
+      });
+  }
+
+    loadBatteryBrands() {
+    this.batteriesLoading = true;
+    this.batteriesError = null;
+    
+    this.batteryService.getBatteryBrands() // Changed to getBatteryBrands
+      .subscribe({
+        next: (brands: BatteryBrand[]) => { // Directly expect BatteryBrand[]
+            this.batteryBrands = brands.slice(0, 4); // Get first 4 battery brands for home page
+            console.log('Battery brands loaded:', this.batteryBrands);
+        },
+        error: (err: any) => {
+          console.error('Error fetching battery brands:', err);
+          this.batteriesError = 'Failed to load battery brands';
+          // Fallback to local data if API fails
+          this.batteryBrands = this.getLocalBatteryBrands();
+        },
+        complete: () => {
+          this.batteriesLoading = false;
         }
       });
   }
@@ -173,65 +197,6 @@ export class HomePage implements OnInit {
       this.goToChatBot();
     }
   }
-  // goToChatBot() {
-  //   console.log("Bot clicked!");
-  //   this.router.navigate(['/chat-bot']);
-  // }
-
-  // Draggable Chatbot
-  // startDrag(event: MouseEvent | TouchEvent) {
-  //   event.preventDefault();
-  //   this.moved = false;
-
-  //   const isTouch = event.type === 'touchstart';
-  //   const initialX = isTouch ? (event as TouchEvent).touches[0].clientX : (event as MouseEvent).clientX;
-  //   const initialY = isTouch ? (event as TouchEvent).touches[0].clientY : (event as MouseEvent).clientY;
-  
-  //   const chatBotEl = this.chatBotRef.nativeElement as HTMLElement;
-  //   const botWidth = chatBotEl.offsetWidth;
-  //   const botHeight = chatBotEl.offsetHeight;
-  
-  //   const move = (e: MouseEvent | TouchEvent) => {
-  //     this.moved = true; // Only set if actual movement
-  //     const clientX = isTouch ? (e as TouchEvent).touches[0].clientX : (e as MouseEvent).clientX;
-  //     const clientY = isTouch ? (e as TouchEvent).touches[0].clientY : (e as MouseEvent).clientY;
-
-      
-  //   const deltaX = Math.abs(clientX - initialX);
-  //   const deltaY = Math.abs(clientY - initialY);
-
-  
-  //   if (deltaX > 5 || deltaY > 5) {
-     
-  //   }
-
-  //     // Dapatkan dimensi skrin
-  //     const screenWidth = window.innerWidth;
-  //     const screenHeight = window.innerHeight;
-  
-  //     // Kira posisi baru
-  //     let left = clientX - botWidth / 2;
-  //     let top = clientY - botHeight / 2;
-  
-  //     // Pastikan tak keluar dari skrin
-  //     left = Math.max(0, Math.min(left, window.innerWidth - botWidth));
-  //     top = Math.max(0, Math.min(top, window.innerHeight - botHeight));
-  
-  //     chatBotEl.style.left = `${left}px`;
-  //     chatBotEl.style.top = `${top}px`;
-  //     chatBotEl.style.right = 'auto';
-  //     chatBotEl.style.bottom = 'auto';
-  //     chatBotEl.style.position = 'fixed';
-  //   };
-
-  //   const end = () => {
-  //     document.removeEventListener(isTouch ? 'touchmove' : 'mousemove', move);
-  //     document.removeEventListener(isTouch ? 'touchend' : 'mouseup', end);
-  //   };
-  
-  //   document.addEventListener(isTouch ? 'touchmove' : 'mousemove', move);
-  //   document.addEventListener(isTouch ? 'touchend' : 'mouseup', end);
-  // }
 
   startDrag(event: MouseEvent | TouchEvent) {
     event.preventDefault();
@@ -343,13 +308,41 @@ export class HomePage implements OnInit {
     ];
   }
 
-  batteries = [
-    { name: 'AMARON', img: 'assets/batteries/Amaron.png' },
-    { name: 'FBM ENERGY', img: 'assets/batteries/fbm.png' },
-    { name: 'VARTA', img: 'assets/batteries/varta.png' },
-    { name: 'START', img: 'assets/batteries/start.png' },
-    { name: 'BOSCH', img: 'assets/batteries/bosch.png' },
-    { name: 'TUFLONG', img: 'assets/batteries/tuflong.png' },
-  ];
-}
+   getLocalBatteryBrands(): BatteryBrand[] {
+    return [
+      {
+        id: '1',
+        name: 'AMARON',
+        logo_url: 'assets/batteries/Amaron.png', // Changed to logo_url, removed seq
+        is_active: true, // Added to match interface
+        created_at: new Date().toISOString(), // Added dummy data
+        updated_at: new Date().toISOString()  // Added dummy data
+      },
+      {
+        id: '2',
+        name: 'FBM ENERGY',
+        logo_url: 'assets/batteries/fbm.png',
+        is_active: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: '3',
+        name: 'VARTA',
+        logo_url: 'assets/batteries/varta.png',
+        is_active: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: '4',
+        name: 'BOSCH',
+        logo_url: 'assets/batteries/bosch.png',
+        is_active: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }
+    ];
 
+  }
+}

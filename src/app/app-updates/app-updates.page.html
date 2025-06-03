@@ -1,0 +1,78 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/account"></ion-back-button>
+    </ion-buttons>
+    <ion-title>App Updates</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="ion-padding">
+    <!-- Current Version Card -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Current Version</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label>
+            <h2>Version {{ currentVersion }}</h2>
+            <p>Initial Release</p>
+          </ion-label>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Current Features Card -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Current Features</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let feature of currentFeatures">
+            <ion-icon [name]="feature.icon" slot="start" color="success"></ion-icon>
+            <ion-label>
+              <h2>{{ feature.title }}</h2>
+              <p>{{ feature.description }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Coming Soon Card -->
+    <!-- <ion-card>
+      <ion-card-header>
+        <ion-card-title>Coming Soon</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let upcoming of upcomingFeatures">
+            <ion-icon [name]="upcoming.icon" slot="start" color="primary"></ion-icon>
+            <ion-label>
+              <h2>{{ upcoming.title }}</h2>
+              <p>{{ upcoming.description }}</p>
+              <ion-note>Expected: {{ upcoming.expectedDate | date:'mediumDate' }}</ion-note>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card> -->
+
+    <!-- Feedback Card -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Help Us Improve</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>We're constantly working to improve your experience. Your feedback is valuable to us!</p>
+        <ion-button expand="block" class="ion-margin-top">
+          <ion-icon name="chatbubble-outline" slot="start"></ion-icon>
+          Send Feedback
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

@@ -48,4 +48,10 @@ export class UserProfileService {
       headers: this.getHeaders()
     });
   }
+
+  deleteAccount() {
+    return this.http.delete(`${this.apiUrl}/user/delete-account`, {
+      headers: this.getHeaders()
+    });
+  }
 } 
