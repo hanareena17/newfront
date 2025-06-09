@@ -23,25 +23,79 @@
     </ion-radio-group>
   </ion-list>
 
+  <!-- Car Selection -->
   <ion-item>
-    <ion-label position="stacked">Preferred Date</ion-label>
-    <ion-datetime
+    <ion-label position="stacked">Select Car *</ion-label>
+    <ion-select 
+      [(ngModel)]="selectedCarId" 
+      placeholder="Select your car"
+      interface="popover"
+      [disabled]="!userCars || userCars.length === 0">
+      <ion-select-option 
+        *ngFor="let car of userCars" 
+        [value]="car.id">
+        {{ car.license_plate }} - {{ car.car_brand?.name }} {{ car.car_model?.name }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-text color="danger" *ngIf="!userCars || userCars.length === 0">
+    <p>You must add a car before booking.</p>
+  </ion-text>
+
+  <ion-button 
+    expand="block" 
+    fill="outline" 
+    color="primary"
+    (click)="goToCarInfo()"
+    class="ion-margin-bottom">
+    <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+    Add New Car
+  </ion-button>
+
+  <ion-item>
+    <ion-label position="stacked">Preferred Date *</ion-label>
+    <ion-datetime 
+      [(ngModel)]="preferredDate" 
       presentation="date"
-      [(ngModel)]="preferredDate"
-      placeholder="Select date"
-    ></ion-datetime>
+      min="{{ minDate }}"
+      max="{{ maxDate }}">
+    </ion-datetime>
   </ion-item>
-  
-  <ion-item class="centered-time">
-    <ion-label position="stacked">Preferred Time</ion-label>
-    <ion-datetime
+
+  <ion-item>
+    <ion-label position="stacked">Preferred Time *</ion-label>
+    <ion-datetime 
+      [(ngModel)]="preferredTime" 
       presentation="time"
-      [(ngModel)]="preferredTime"
-      placeholder="Select time"
-    ></ion-datetime>
+      hour-cycle="h23">
+    </ion-datetime>
   </ion-item>
-  
-  
+
+  <!-- Location Selection -->
+  <ion-item>
+    <ion-label position="stacked">Location *</ion-label>
+    <ion-input [(ngModel)]="location" placeholder="Select your location" readonly></ion-input>
+    <ion-button slot="end" fill="clear" (click)="goToMap()">
+      <ion-icon name="location-outline"></ion-icon>
+    </ion-button>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Notes</ion-label>
+    <ion-textarea 
+      [(ngModel)]="notes" 
+      placeholder="Add any additional notes here...">
+    </ion-textarea>
+  </ion-item>
+
+  <ion-button 
+    expand="block" 
+    style="--background: #ff6f00; color: white;" 
+    (click)="submitBooking()" 
+    [disabled]="!serviceType || !selectedCarId || !preferredDate || !preferredTime || !location || !userCars || userCars.length === 0">
+    Submit Booking
+  </ion-button>
 
   <ion-card *ngIf="serviceType || notes || preferredDate || preferredTime">
     <ion-card-header>
@@ -55,11 +109,4 @@
       <p><strong>Notes:</strong> {{ notes || 'None' }}</p>
     </ion-card-content>
   </ion-card>
-  
-  <ion-item lines="none">
-    <ion-label position="stacked">Additional Notes (optional)</ion-label>
-    <ion-textarea [(ngModel)]="notes" placeholder="e.g. Preferred time or location"></ion-textarea>
-  </ion-item>
-
-  <ion-button expand="block" style="--background: #ff6f00; color: white;" (click)="submitBooking()">
-    Submit Booking </ion-button>
+</ion-content>

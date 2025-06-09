@@ -1,0 +1,135 @@
+<ion-header>
+  <ion-toolbar class="custom-toolbar">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="goBack()">
+        <ion-icon name="chevron-back" color="dark"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="toolbar-title">Order Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="order-content">
+  <!-- My Cart Section -->
+  <div class="section-container">
+    <h2 class="section-title">My Cart</h2>
+    
+    <ion-card class="cart-card">
+      <ion-card-content class="cart-content">
+        <div class="cart-item">
+          <div class="item-image">
+            <img src="/api/placeholder/60/60" alt="Headphones" />
+          </div>
+          
+          <div class="item-details">
+            <h3 class="item-name">{{ cartItem.name }}</h3>
+            <div class="item-price">
+              <span class="price">${{ cartItem.price.toFixed(2) }}</span>
+              <span class="tax">(+ ${{ cartItem.tax.toFixed(2) }} Tax)</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="quantity-controls">
+          <ion-button 
+            fill="clear" 
+            size="small" 
+            (click)="decreaseQuantity()"
+            [disabled]="cartItem.quantity <= 1">
+            <ion-icon name="remove" color="medium"></ion-icon>
+          </ion-button>
+          
+          <span class="quantity">{{ cartItem.quantity }}</span>
+          
+          <ion-button 
+            fill="clear" 
+            size="small" 
+            (click)="increaseQuantity()">
+            <ion-icon name="add" color="medium"></ion-icon>
+          </ion-button>
+          
+          <ion-button 
+            fill="clear" 
+            size="small" 
+            (click)="removeItem()"
+            class="remove-btn">
+            <ion-icon name="trash" color="medium"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Delivery Location Section -->
+  <div class="section-container">
+    <h2 class="section-title">Delivery Location</h2>
+    
+    <ion-card class="info-card">
+      <ion-card-content>
+        <ion-item lines="none" class="location-item">
+          <div class="location-pin" slot="start"></div>
+          <ion-label>
+            <h3 class="location-address">{{ deliveryLocation.address }}</h3>
+            <p class="location-area">{{ deliveryLocation.area }}</p>
+          </ion-label>
+          <ion-icon name="chevron-forward" color="medium" slot="end"></ion-icon>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Payment Method Section -->
+  <div class="section-container">
+    <h2 class="section-title">Payment Method</h2>
+    
+    <ion-card class="info-card">
+      <ion-card-content>
+        <ion-item lines="none" class="payment-item">
+          <div class="visa-logo" slot="start">
+            <span class="visa-text">VISA</span>
+          </div>
+          <ion-label>
+            <h3 class="payment-type">{{ paymentMethod.type }}</h3>
+            <p class="card-number">{{ paymentMethod.cardNumber }}</p>
+          </ion-label>
+          <ion-icon name="chevron-forward" color="medium" slot="end"></ion-icon>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Order Info Section -->
+  <div class="section-container">
+    <h2 class="section-title">Order Info</h2>
+    
+    <ion-card class="order-info-card">
+      <ion-card-content>
+        <div class="order-row">
+          <span class="order-label">Subtotal</span>
+          <span class="order-value">${{ subtotal.toFixed(2) }}</span>
+        </div>
+        
+        <div class="order-row">
+          <span class="order-label">Shipping Cost</span>
+          <span class="order-value">+${{ shippingCost.toFixed(2) }}</span>
+        </div>
+        
+        <div class="order-row total-row">
+          <span class="order-label">Total</span>
+          <span class="order-value total-value">${{ total.toFixed(2) }}</span>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Checkout Button -->
+  <div class="checkout-container">
+    <ion-button 
+      expand="block" 
+      shape="round" 
+      class="checkout-btn"
+      (click)="checkout()">
+      CHECKOUT (${{ total.toFixed(2) }})
+    </ion-button>
+  </div>
+</ion-content>

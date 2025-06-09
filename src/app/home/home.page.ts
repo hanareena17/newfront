@@ -91,15 +91,17 @@ export class HomePage implements OnInit {
       });
   }
 
-    loadBatteryBrands() {
+  loadBatteryBrands() {
     this.batteriesLoading = true;
     this.batteriesError = null;
     
-    this.batteryService.getBatteryBrands() // Changed to getBatteryBrands
+    this.batteryService.getBatteryBrands()
       .subscribe({
-        next: (brands: BatteryBrand[]) => { // Directly expect BatteryBrand[]
-            this.batteryBrands = brands.slice(0, 4); // Get first 4 battery brands for home page
-            console.log('Battery brands loaded:', this.batteryBrands);
+        next: (response: { status: string, data: BatteryBrand[] }) => {
+          if (response.status === 'success') {
+            this.batteryBrands = response.data.slice(0, 4);
+            console.log('Battery Brands loaded:', this.batteryBrands);
+          }
         },
         error: (err: any) => {
           console.error('Error fetching battery brands:', err);
@@ -308,41 +310,32 @@ export class HomePage implements OnInit {
     ];
   }
 
-   getLocalBatteryBrands(): BatteryBrand[] {
+  getLocalBatteryBrands(): BatteryBrand[] {
     return [
       {
         id: '1',
         name: 'AMARON',
-        logo_url: 'assets/batteries/Amaron.png', // Changed to logo_url, removed seq
-        is_active: true, // Added to match interface
-        created_at: new Date().toISOString(), // Added dummy data
-        updated_at: new Date().toISOString()  // Added dummy data
+        image_url: 'https://example.com/images/batteries/amaron.png',
+        seq: 1
       },
       {
         id: '2',
         name: 'FBM ENERGY',
-        logo_url: 'assets/batteries/fbm.png',
-        is_active: true,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        image_url: 'https://example.com/images/batteries/fbm.png',
+        seq: 2
       },
       {
         id: '3',
         name: 'VARTA',
-        logo_url: 'assets/batteries/varta.png',
-        is_active: true,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        image_url: 'https://example.com/images/batteries/varta.png',
+        seq: 3
       },
       {
         id: '4',
         name: 'BOSCH',
-        logo_url: 'assets/batteries/bosch.png',
-        is_active: true,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        image_url: 'https://example.com/images/batteries/bosch.png',
+        seq: 4
       }
     ];
-
   }
 }

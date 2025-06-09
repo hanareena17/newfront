@@ -4,35 +4,139 @@
       <ion-back-button defaultHref="/order-detail"></ion-back-button>
     </ion-buttons>
     <ion-title>Invoice Preview</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="downloadInvoice()">
+        <ion-icon slot="icon-only" name="download-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <div class="invoice-box">
-    <h2>Invoice</h2>
-    <p><strong>Order Code:</strong> #{{ order.code }}</p>
-    <p><strong>Date:</strong> {{ order.date }}</p>
-    <p><strong>Customer:</strong> {{ order.customer }}</p>
-    <p><strong>Email:</strong> {{ order.email }}</p>
-
-    <div class="invoice-table">
-      <div class="invoice-row header">
-        <span>Item</span>
-        <span>Qty</span>
-        <span>Price</span>
+  <div class="invoice-container" id="invoice-content">
+    <!-- Company Header -->
+    <div class="company-header">
+      <div class="logo">
+        <img src="assets/icon/logo.png" alt="Baterikereta Logo">
       </div>
-      <div class="invoice-row" *ngFor="let item of order.items">
-        <span>{{ item.name }}</span>
-        <span>{{ item.qty }}</span>
-        <span>RM{{ item.price }}</span>
-      </div>
-      <div class="invoice-row total">
-        <span>Total</span>
-        <span></span>
-        <span>RM{{ order.total }}</span>
-        <ion-button expand="block" style="--background: #ff6f00; color: white;"    (click)="download()">Download PDF</ion-button>
-
+      <div class="company-details">
+        <p><strong>BATERIKERETA (M) SDN. BHD.</strong> (202101044645 / 1444945-T)</p>
+        <p>G-01, KSL AVERY PARK, Pangsapuri Rinting Indah, Jalan Rinting, Taman Rinting Indah</p>
+        <p>81750 Masai, Johor</p>
+        <p>Malaysia</p>
+        <p>Contact: +60167306468 / baterikeretahq&#64;gmail.com</p>
+        <p>Website: https://baterikereta.com</p>
       </div>
     </div>
 
-   
+    <!-- Invoice Meta -->
+    <div class="invoice-meta">
+      <div class="bill-to">
+        <p class="section-title">INVOICE</p>
+        <p>BILL TO</p>
+        <p><strong>SEABOARD ENGINEERING</strong></p>
+        <p>PHONE NO. &nbsp;&nbsp;&nbsp;&nbsp; +60123560339</p>
+      </div>
+      <div class="invoice-info">
+        <table>
+          <tr>
+            <td>NO.</td>
+            <td>IV-46190</td>
+          </tr>
+          <tr>
+            <td>DATE</td>
+            <td>05/04/2025</td>
+          </tr>
+          <tr>
+            <td>PAYMENT TERM</td>
+            <td>COD</td>
+          </tr>
+          <tr>
+            <td>DUE DATE</td>
+            <td>05/04/2025</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Items Table -->
+    <div class="items-table">
+      <table>
+        <thead>
+          <tr>
+            <th>NO.</th>
+            <th>DESCRIPTION</th>
+            <th>QTY</th>
+            <th>U/PRICE</th>
+            <th>AMT</th>
+            <th>DISC</th>
+            <th>TAX</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Replace with actual data using *ngFor -->
+          <tr>
+            <td>1</td>
+            <td>
+              FBM - NX120L (95D31L)<br>
+              6 MONTHS WARRANTY<br>
+              JRG4067
+            </td>
+            <td>1</td>
+            <td>330.00</td>
+            <td>330.00</td>
+            <td>0.00</td>
+            <td>0.00</td>
+          </tr>
+          <!-- Add more rows as needed -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Totals -->
+    <div class="totals-section">
+      <table>
+        <tr>
+          <td>SUBTOTAL</td>
+          <td>RM330.00</td>
+        </tr>
+        <tr class="total-row">
+          <td>TOTAL</td>
+          <td>RM330.00</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Remarks and Footer -->
+    <div class="remarks-footer">
+      <div class="remarks">
+        <p><strong>REMARKS</strong></p>
+        <p>TERM & CONDITIONS DURING THE PURCHASE</p>
+        <p>EVERY PURCHASE OF PRODUCTS IS SUBJECT TO THE FOLLOWING TERMS & CONDITIONS :</p>
+        <p>ALL GOODS SOLD ARE NOT EXCHANGEABLE AND REFUNDABLE.</p>
+        <p>FOR BATTERY PURCHASE, GENUINE WARRANTY CLAIM ONLY APPLICABLE FOR BATTERY DEFECT AND NOT-APPLICABLE FOR CUSTOMERS NEGLIGENCE AND VEHICLE PROBLEM IE ' ALTERNATOR, STATER, WIRING, ETC '</p>
+      </div>
+      <div class="notes">
+        <p><strong>NOTES :</strong></p>
+        <p>ALL CHEQUES SHOLUD BE CROSSED AND MADE PAYABLE TO :</p>
+        <p>BATERIKERETA (M) SDN. BHD.</p>
+        <p>MAYBANK : 551333556309</p>
+      </div>
+      <div class="stamp-section">
+        <img src="assets/icon/stamp.png" alt="Company Stamp" class="stamp-img"> <!-- Assuming you have a stamp image -->
+      </div>
+      <div class="authorised-by">
+        <hr>
+        <p>Authorised By</p>
+      </div>
+    </div>
+
+    <!-- Page Number -->
+    <div class="page-number">
+      <p>Page 1 / 1</p>
+    </div>
+  </div>
+
+  <!-- Download Button - Kept outside the printable area if needed, or can be part of it -->
+  <!-- The button is now in the header -->
+</ion-content>

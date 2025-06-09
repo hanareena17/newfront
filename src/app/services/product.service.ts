@@ -12,7 +12,7 @@ export interface Product {
   name: string;
   description?: string;
   price: number;
-  stock_quantity: number;
+  // stock_quantity: number;
   sku?: string;
   image_url?: string; // Main image
   gallery_urls?: string[]; // Additional images
@@ -24,15 +24,15 @@ export interface Product {
   voltage?: string; // e.g., 12V
   capacity_ah?: number; // Ampere-hour
   cca?: number; // Cold Cranking Amps
-  warranty_period_months?: number;
-  length_mm?: number;
-  width_mm?: number;
-  height_mm?: number;
-  weight_kg?: number;
-  is_active: boolean;
-  created_at: string;
-  updated_at: string;
-  deleted_at?: string | null;
+  // warranty_period_months?: number;
+  // length_mm?: number;
+  // width_mm?: number;
+  // height_mm?: number;
+  // weight_kg?: number;
+  // is_active: boolean;
+  // created_at: string;
+  // updated_at: string;
+  // deleted_at?: string | null;
   // Relationships (optional, if your API returns them nested)
   battery_brand?: BatteryBrand;
   battery_brand_series?: BatteryBrandSeries;
@@ -61,7 +61,7 @@ export class ProductService {
   }
 
   // Example: Get products by battery brand
-  getProductsByBatteryBrand(brandId: string): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.apiUrl}?battery_brand_id=${brandId}`);
+  getProductsByBatteryBrand(brandId: string): Observable<{ status: string, data: Product[] }> {
+    return this.http.get<{ status: string, data: Product[] }>(`${this.apiUrl}/batteryBrands/${brandId}/products`);
   }
 }

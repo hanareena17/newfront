@@ -123,11 +123,11 @@ export const routes: Routes = [
   },
   {
     path: 'batteryshop',
-    loadComponent: () => import('./batteryshop/batteryshop.page').then( m => m.BatteryshopPage)
+    loadComponent: () => import('./batteryshop/batteryshop.page').then( m => m.BatteryShopPage)
   },
   {
     path: 'product-details',
-    loadComponent: () => import('./product-details/product-details.page').then( m => m.ProductDetailsPage)
+    loadComponent: () => import('./product-details/product-details.page').then( m => m.ProductDetailPage)
   },
 
   {
@@ -157,6 +157,22 @@ export const routes: Routes = [
   {
     path: 'change-password',
     loadComponent: () => import('./change-password/change-password.page').then(m => m.ChangePasswordPage)
+  },
+  {
+    path: 'map',
+    loadComponent: () => import('./map/map.page').then( m => m.MapPage)
+  },
+  {
+    path: 'payment',
+    loadComponent: () => import('./payment/payment.page').then( m => m.PaymentPage)
+  },
+  {
+    path: 'cart',
+    loadComponent: () => import('./cart/cart.page').then( m => m.CartPage)
+  },
+  {
+    path: 'add-to-cart',
+    loadComponent: () => import('./add-to-cart/add-to-cart.page').then( m => m.AddToCartPage)
   },
 
 

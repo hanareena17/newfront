@@ -1,16 +1,89 @@
-<ion-header translucent="true">
-  <ion-toolbar>
+<ion-header>
+  <ion-toolbar class="custom-toolbar">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home">
-      </ion-back-button>
+      <ion-button fill="clear" (click)="goBack()">
+        <ion-icon name="chevron-back" color="dark"></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-title>{{ product?.name }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-img [src]="product?.image" class="product-img-detail"></ion-img>
-  <h2>{{ product?.name }}</h2>
-  <p class="price">Price: RM {{ product?.price }}</p>
-  <!-- Add to Cart button can be here too -->
+<ion-content class="product-content">
+  <!-- Product Image Section -->
+  <div class="product-image-container">
+    <div class="product-image">
+      <img src="/api/placeholder/300/300" alt="{{ product.name }}" />
+    </div>
+    
+    <!-- Progress Indicator -->
+    <div class="progress-indicator">
+      <div class="progress-bar">
+        <div class="progress-active"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Info Section -->
+  <div class="product-info-container">
+    <!-- Shopping Badge -->
+    <div class="shopping-badge">
+      <ion-chip class="shopping-chip">
+        <ion-icon name="bag-outline" color="primary"></ion-icon>
+        <ion-label color="primary">Shopping</ion-label>
+      </ion-chip>
+    </div>
+
+    <!-- Product Title and Link -->
+    <div class="product-header">
+      <h1 class="product-title">{{ product.name }}</h1>
+      <ion-button fill="clear" size="small" (click)="openShopLink()">
+        <ion-icon name="link-outline" color="medium"></ion-icon>
+      </ion-button>
+    </div>
+
+    <!-- Shop Info Card -->
+    <ion-card class="shop-info-card">
+      <ion-card-content>
+        <div class="shop-header">
+          <h3 class="shop-name">{{ product.shopInfo.name }}</h3>
+          <p class="shop-description">{{ product.shopInfo.description }}</p>
+        </div>
+        
+        <ion-item 
+          lines="none" 
+          class="shop-location" 
+          button 
+          (click)="viewShopDetails()">
+          <ion-icon name="location-outline" color="primary" slot="start"></ion-icon>
+          <ion-label>
+            <h4 class="location-address">{{ product.shopInfo.address }}</h4>
+            <p class="location-area">{{ product.shopInfo.area }}</p>
+          </ion-label>
+          <ion-icon name="chevron-forward" color="medium" slot="end"></ion-icon>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Price Section -->
+    <div class="price-section">
+      <div class="price-main">
+        <span class="current-price">${{ product.price.toFixed(2) }}</span>
+      </div>
+      
+      <div class="price-details">
+        <span class="tax-info">Tax Rate: {{ product.taxRate }}% - ${{ taxAmount.toFixed(2) }} (+ ${{ finalPrice.toFixed(2) }})</span>
+      </div>
+    </div>
+
+    <!-- Add to Cart Button -->
+    <div class="add-to-cart-container">
+      <ion-button 
+        expand="block" 
+        shape="round" 
+        class="add-to-cart-btn"
+        (click)="addToCart()">
+        ADD TO CART
+      </ion-button>
+    </div>
+  </div>
 </ion-content>

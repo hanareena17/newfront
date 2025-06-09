@@ -1,112 +1,311 @@
-.header-shadow {
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+// Custom Header
+.custom-header {
+  // --background: linear-gradient(135deg, #ff6b35, #f7931e);
+  --background: #ff6f00;
+  --color: white;
+  
+  ion-title {
+    font-weight: 600;
+    font-size: 1.2rem;
+  }
+}
+
+// Welcome Card
+.welcome-card {
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
+  margin: 16px;
+  padding: 24px;
+  border-radius: 16px;
+  color: white;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(255, 107, 53, 0.3);
+  
+  h2 {
+    margin: 0 0 8px 0;
+    font-size: 1.5rem;
+    font-weight: 600;
   }
   
-  .app-title {
-    font-size: 22px;
+  p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 0.95rem;
+  }
+}
+
+// Search Container
+.search-container {
+  padding: 0 16px 16px 16px;
+  
+  .custom-searchbar {
+    --background: #f8f9fa;
+    --border-radius: 12px;
+    --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Category Filter
+.category-container {
+  padding: 0 16px 16px 16px;
+  
+  .category-segment {
+    --background: #f8f9fa;
+    border-radius: 12px;
+    overflow-x: auto;
+    
+    .category-button {
+      --color: #666;
+      --color-checked: #ff6b35;
+      --background-checked: rgba(255, 107, 53, 0.1);
+      --border-color-checked: #ff6b35;
+      flex-shrink: 0;
+      min-width: 100px;
+      
+      .category-icon {
+        font-size: 1.2rem;
+        margin-bottom: 4px;
+        display: block;
+      }
+      
+      ion-label {
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+// Battery Grid
+.battery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  padding: 0 16px 32px 16px;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Battery Card
+.battery-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+  
+  // Sale Badge
+  .sale-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #e74c3c;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 0.7rem;
     font-weight: 600;
+    z-index: 2;
+  }
+  
+  // Battery Image
+  .battery-image {
+    height: 200px;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+  }
+  
+  &:hover .battery-image img {
+    transform: scale(1.05);
+  }
+  
+  ion-card-content {
+    padding: 16px;
+  }
+  
+  // Battery Header
+  .battery-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    
+    .brand-badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+    
+    .stock-status {
+      ion-badge {
+        font-size: 0.65rem;
+        font-weight: 500;
+      }
+    }
+  }
+  
+  // Battery Info
+  .battery-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 4px 0;
     color: #333;
   }
   
-  .brand-scroll {
-    display: flex;
-    overflow-x: auto;
-    gap: 10px;
-    padding: 12px 0;
-    margin-bottom: 10px;
+  .battery-specs {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0 0 12px 0;
   }
   
-  .brand-chip {
-    background: #f6f6f6;
-    border-radius: 18px;
-    padding: 6px 10px;
-  }
-  
-  .featured-img {
-    width: 100%;
-    height: auto;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    margin-bottom: 20px;
-  }
-  
-  .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 4px;
-    margin-bottom: 10px;
-  }
-  
-  .section-title {
-    font-size: 18px;
-    font-weight: 600;
-  }
-  
-  .see-all {
-    font-size: 14px;
-    color: #3880ff;
-    font-weight: 500;
-  }
-  
-  .product-card {
-    border-radius: 14px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.07);
-    transition: transform 0.2s ease-in-out;
-  }
-  
-  .product-card:hover {
-    transform: scale(1.02);
-  }
-  
-  .product-img {
-    width: 100%;
-    height: 120px;
-    object-fit: contain;
-    border-radius: 12px 12px 0 0;
-    background:  #ff6f00;
-  }
-  
-  .product-name {
-    font-size: 16px;
-    font-weight: 500;
-    margin-top: 5px;
-  }
-  
-  .price-like {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: 600;
-    font-size: 14px;
-    margin-top: 5px;
-  }
-  
-  ion-item {
-    --padding-start: 0;
-    --inner-padding-end: 0;
-    margin-bottom: 10px;
-  }
-
-  .app-title-container {
+  // Rating
+  .rating {
     display: flex;
     align-items: center;
     gap: 8px;
-  }
-  
-  // .app-logo {
-  //   width: 50px;
-  //   height: 50px;
-  //   object-fit: contain;
+    margin-bottom: 16px;
     
-  // }
-  
-  .app-title {
-    // font-size: 22px;
-    // font-weight: 600;
-    // color: #ff6f00;
-  //   width: 50px;
-  //   height: 50px;
-    object-fit: contain;
+    .stars {
+      .star-filled {
+        color: #ffd700;
+      }
+      
+      .star-empty {
+        color: #ddd;
+      }
+    }
+    
+    .rating-text {
+      font-size: 0.8rem;
+      color: #666;
+    }
   }
   
+  // Price
+  .price-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    
+    .current-price {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #ff6b35;
+    }
+    
+    .original-price {
+      font-size: 1rem;
+      color: #999;
+      text-decoration: line-through;
+    }
+  }
+  
+  // Action Buttons
+  .action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    
+    ion-button {
+      --border-radius: 8px;
+      font-weight: 500;
+      
+      &[color="primary"] {
+        --background: #ff6b35;
+        --background-hover: #e55a2e;
+        --background-activated: #e55a2e;
+      }
+    }
+    
+    .book-service-btn {
+      --color: #ff6b35;
+      --border-color: #ff6b35;
+      
+      &:hover {
+        --background: rgba(255, 107, 53, 0.1);
+      }
+    }
+  }
+}
+
+// Empty State
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: #666;
+  
+  ion-icon {
+    margin-bottom: 16px;
+  }
+  
+  h3 {
+    margin: 0 0 8px 0;
+    font-size: 1.2rem;
+  }
+  
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+}
+
+// Cart Badge
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  min-width: 18px;
+  height: 18px;
+  font-size: 0.7rem;
+  border-radius: 50%;
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .battery-grid {
+    padding: 0 12px 24px 12px;
+  }
+  
+  .welcome-card {
+    margin: 12px;
+  }
+  
+  .category-container {
+    padding: 0 12px 12px 12px;
+  }
+  
+  .search-container {
+    padding: 0 12px 12px 12px;
+  }
+}
+
+// Global Ionic Overrides
+ion-content {
+  --background: #fafafa;
+}
+
+// Segment styling improvements
+ion-segment {
+  --background: transparent;
+}
+
+ion-segment-button {
+  --indicator-color: #ff6b35;
+  --indicator-color-checked: #ff6b35;
+}

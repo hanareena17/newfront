@@ -1,94 +1,147 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, NavController, AlertController } from '@ionic/angular'; // Added AlertController
-import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http'; // Added HttpClient, HttpClientModule, HttpHeaders
-import { environment } from '../../environments/environment'; // Assuming you have an environment file for API URL
-import { AuthService } from '../services/auth.service'; // Added AuthService
+import { IonicModule, NavController, AlertController, ToastController } from '@ionic/angular';
+import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { AuthService } from '../services/auth.service';
+import { CarService, UserCar } from '../services/car.service';
+import { BookingService } from '../services/booking.service';
 
 @Component({
   selector: 'app-booking',
   standalone: true,
-  imports: [CommonModule, FormsModule, IonicModule, HttpClientModule], // Added HttpClientModule
+  imports: [CommonModule, FormsModule, IonicModule, HttpClientModule],
   templateUrl: './booking.page.html',
   styleUrls: ['./booking.page.scss'],
 })
-export class BookingPage {
+export class BookingPage implements OnInit {
   serviceType: string = '';
   notes: string = '';
   preferredDate: string = '';
   preferredTime: string = '';
   location: string = '';
+  selectedCarId: string = '';
+  userCars: UserCar[] = [];
+  minDate: string = new Date().toISOString();
+  maxDate: string = new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString();
+  latitude: number = 0;
+  longitude: number = 0;
 
-  // It's good practice to store your API URL in environment files
-  private apiUrl = environment.apiUrl || 'http://localhost:8000/api'; // Fallback if not in environment
+  private apiUrl = environment.apiUrl || 'http://localhost:8000/api';
 
   constructor(
     private navCtrl: NavController,
     private http: HttpClient,
-    private alertController: AlertController, // Added AlertController
-    private authService: AuthService // Added AuthService
+    private alertController: AlertController,
+    private toastController: ToastController,
+    private authService: AuthService,
+    private carService: CarService,
+    private bookingService: BookingService
   ) {}
+
+  ngOnInit() {
+    this.loadUserCars();
+    this.checkSelectedLocation();
+  }
+
+  checkSelectedLocation() {
+    const selectedLocation = localStorage.getItem('selectedLocation');
+    if (selectedLocation) {
+      const location = JSON.parse(selectedLocation);
+      this.location = location.address || 'Selected Location';
+      this.latitude = location.lat;
+      this.longitude = location.lng;
+    }
+  }
+
+  goToMap() {
+    this.navCtrl.navigateForward('/map');
+  }
+
+  async loadUserCars() {
+    try {
+      this.userCars = await this.carService.getUserCars().toPromise() || [];
+    } catch (error) {
+      console.error('Error loading user cars:', error);
+      this.presentAlert('Error', 'Failed to load your cars. Please try again.');
+    }
+  }
+
+  goToCarInfo() {
+    this.navCtrl.navigateForward('/car-info');
+  }
 
   async submitBooking() {
     if (!this.serviceType) {
-      this.presentAlert('Validation Error', 'Please choose a service type.');
+      this.presentToast('Please select a service type');
+      return;
+    }
+    if (!this.selectedCarId) {
+      this.presentToast('Please select a car');
+      return;
+    }
+    if (!this.preferredDate) {
+      this.presentToast('Please select a preferred date');
+      return;
+    }
+    if (!this.preferredTime) {
+      this.presentToast('Please select a preferred time');
+      return;
+    }
+    if (!this.location || !this.latitude || !this.longitude) {
+      this.presentToast('Please select a location on the map');
       return;
     }
 
-    // Map to backend expected snake_case keys
-    const bookingPayload = {
-      service_type: this.serviceType,
-      preferred_date: this.preferredDate ? new Date(this.preferredDate).toISOString().split('T')[0] : null, // Format as YYYY-MM-DD
-      preferred_time: this.preferredTime ? new Date(this.preferredTime).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : null, // Format as HH:MM
-      location: this.location,
-      notes: this.notes
-    };
+    try {
+      // Format date and time
+      const formattedDate = new Date(this.preferredDate).toISOString().split('T')[0];
+      const formattedTime = this.preferredTime.split('T')[1].substring(0, 5);
 
-    console.log('Submitting booking payload:', bookingPayload);
+      const bookingData = {
+        service_type: this.serviceType,
+        preferred_date: formattedDate,
+        preferred_time: formattedTime,
+        location: this.location,
+        latitude: this.latitude,
+        longitude: this.longitude,
+        notes: this.notes,
+        user_car_id: this.selectedCarId
+      };
 
-    const token = this.authService.getToken();
-    if (!token) {
-      this.presentAlert('Error', 'You are not authenticated. Please log in.');
-      // Optionally navigate to login page
-      // this.navCtrl.navigateRoot('/login');
-      return;
-    }
+      console.log('Submitting booking with data:', bookingData);
 
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-
-    this.http.post(`${this.apiUrl}/bookings`, bookingPayload, { headers }).subscribe({
-      next: (response) => {
-        console.log('Booking successful:', response);
-        this.presentAlert('Success', 'Your booking has been submitted!');
-        this.navCtrl.navigateBack('/home');
-      },
-      error: (error) => {
-        console.error('Error submitting booking:', error);
-        let errorMessage = 'Failed to submit booking. Please try again.';
-        if (error.error && error.error.message) {
-          errorMessage = error.error.message;
-          if (error.error.errors && typeof error.error.errors === 'object') {
-            // Append validation errors if available
-            // Replace .flat() with a compatible alternative
-            const allErrors = Object.values(error.error.errors) as string[][]; // Assuming errors are string[][]
-            const validationErrors = allErrors.reduce((acc, val) => acc.concat(val), []).join('\n');
-            errorMessage += `\n\nDetails:\n${validationErrors}`;
-          }
-        }
-        this.presentAlert('Error', errorMessage);
+      const bookingObservable = await this.bookingService.createBooking(bookingData);
+      const response = await bookingObservable.toPromise();
+      
+      if (response && 'data' in response) {
+        const bookingId = response.data.id;
+        localStorage.setItem('currentBookingId', bookingId);
+        this.presentToast('Booking created successfully');
+        this.navCtrl.navigateForward('/payment');
       }
-    });
+    } catch (error) {
+      console.error('Error creating booking:', error);
+      this.presentToast('Failed to create booking. Please try again.');
+    }
   }
 
   async presentAlert(header: string, message: string) {
     const alert = await this.alertController.create({
-      header,
-      message,
+      header: header,
+      message: message,
       buttons: ['OK']
     });
     await alert.present();
+  }
+
+  private async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      position: 'bottom'
+    });
+    await toast.present();
   }
 }

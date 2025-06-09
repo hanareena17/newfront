@@ -1,41 +1,245 @@
-.invoice-box {
-    background: #fff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  }
-  
-  .invoice-box h2 {
-    margin-bottom: 10px;
-  }
-  
-  .invoice-table {
-    margin: 16px 0;
-  }
-  
-  .invoice-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 6px 0;
-    font-size: 14px;
-  }
-  
-  .invoice-row.header {
-    font-weight: bold;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 6px;
-  }
-  
-  .invoice-row.total {
-    font-weight: bold;
-    border-top: 1px solid #ccc;
-    padding-top: 10px;
-  }
-  
+ion-toolbar {
+  --background: #f8f8f8;
+  --color: #333;
+  --border-color: #e0e0e0;
+}
 
-.invoice-btn{
-  --padding-top: 4 px;
-  --padding-bottom: 4px;
-  font-size: 12px;
-  --border-radius: 8px;
+ion-title {
+  font-weight: bold;
+}
+
+ion-content {
+  --background: #ffffff; // White background for the content area
+  font-family: 'Arial', sans-serif; // A common, clean font
+}
+
+.invoice-container {
+  max-width: 800px; // Standard A4-like width
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #e0e0e0; // Light border for the whole invoice
+  background: #fff;
+  color: #333; // Default text color
+  font-size: 10pt; // Base font size, adjust as needed
+
+  p {
+    margin: 4px 0;
+    line-height: 1.4;
+  }
+}
+
+// Header Section
+.company-header {
+  display: flex;
+  align-items: flex-start; // Align items to the top
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e0e0e0;
+
+  .logo {
+    margin-right: 20px;
+    img {
+      width: 100px; // Adjust as needed
+      height: auto;
+    }
+  }
+
+  .company-details {
+    flex-grow: 1;
+    p {
+      margin: 2px 0;
+      font-size: 0.9em;
+      strong {
+        font-size: 1.1em;
+      }
+    }
+  }
+}
+
+// Invoice Meta Section (Bill To & Invoice Info)
+.invoice-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #ff6f00; // Orange line as in image
+
+  .bill-to {
+    .section-title {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #ff6f00; // Orange color for "INVOICE"
+      margin-bottom: 10px;
+    }
+    p {
+      margin: 3px 0;
+    }
+  }
+
+  .invoice-info {
+    text-align: right;
+    table {
+      width: auto; // Let table size to content
+      border-collapse: collapse;
+      td {
+        padding: 3px 5px;
+        &:first-child {
+          text-align: left;
+          font-weight: normal;
+          padding-right: 15px; // Space between label and value
+        }
+        &:last-child {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+
+// Items Table
+.items-table {
+  margin-bottom: 20px;
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    th, td {
+      border: 1px solid #e0e0e0;
+      padding: 8px;
+      text-align: left;
+      font-size: 0.9em;
+    }
+    th {
+      background-color: #f8f8f8; // Light grey for header
+      font-weight: bold;
+      color: #ff6f00; // Orange text for table headers
+    }
+    td {
+      vertical-align: top; // In case of multi-line descriptions
+    }
+    // Specific column alignments/widths if needed
+    th:nth-child(1), td:nth-child(1) { text-align: center; width: 5%; } // NO.
+    th:nth-child(3), td:nth-child(3) { text-align: center; width: 8%; } // QTY
+    th:nth-child(4), td:nth-child(4) { text-align: right; width: 12%; } // U/PRICE
+    th:nth-child(5), td:nth-child(5) { text-align: right; width: 12%; } // AMT
+    th:nth-child(6), td:nth-child(6) { text-align: right; width: 10%; } // DISC
+    th:nth-child(7), td:nth-child(7) { text-align: right; width: 10%; } // TAX
+  }
+}
+
+// Totals Section
+.totals-section {
+  margin-bottom: 20px;
+  padding-top: 10px;
+  border-top: 2px solid #ff6f00; // Orange line above subtotal
+
+  table {
+    width: 40%; // Align to the right
+    margin-left: auto;
+    border-collapse: collapse;
+    td {
+      padding: 5px 8px;
+      font-size: 0.95em;
+      &:first-child {
+        text-align: right;
+        font-weight: bold;
+        padding-right: 20px;
+      }
+      &:last-child {
+        text-align: right;
+        font-weight: bold;
+        min-width: 100px; // Ensure enough space for amount
+      }
+    }
+  }
+  .total-row td {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #ff6f00; // Orange for the final total
+    border-top: 2px solid #ff6f00; // Double line for total
+    padding-top: 8px;
+    margin-top: 5px; // Spacing for the double line effect
+  }
+   // Add a pseudo-element for the second line of the total
+   .total-row td:first-child::before, .total-row td:last-child::before {
+    content: "";
+    display: block;
+    border-top: 1px solid #ff6f00;
+    margin-bottom: 3px; /* Adjust this value to control the spacing between the lines */
+  }
+}
+
+
+// Remarks and Footer
+.remarks-footer {
+  margin-bottom: 20px;
+  font-size: 0.8em;
+  line-height: 1.3;
+
+  .remarks, .notes {
+    margin-bottom: 15px;
+    p strong {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+  }
+}
+
+.stamp-section {
+  text-align: left; // Or center, depending on desired placement
+  margin-bottom: 10px;
+  .stamp-img {
+    width: 120px; // Adjust as needed
+    height: auto;
+    opacity: 0.7; // Stamps are often not fully opaque
+  }
+}
+
+.authorised-by {
+  margin-top: 30px; // Space above the line
+  hr {
+    border: none;
+    border-top: 1px solid #ff6f00; // Orange line
+    margin-bottom: 5px;
+    width: 200px; // Width of the signature line
+    margin-left: 0; // Align left
+  }
+  p {
+    font-size: 0.9em;
+  }
+}
+
+// Page Number
+.page-number {
+  text-align: right;
+  font-size: 0.8em;
+  color: #777;
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 1px solid #e0e0e0;
+}
+
+// Ensure ion-button in header is styled if needed
+ion-header ion-button {
+  --color: #ff6f00; // Orange icon color
+}
+
+// Hide elements not meant for PDF print
+@media print {
+  ion-header, ion-button.download-pdf-button {
+    display: none !important;
+  }
+  ion-content {
+    --background: #fff; // Ensure white background for print
+    --padding-start: 0;
+    --padding-end: 0;
+    --padding-top: 0;
+    --padding-bottom: 0;
+  }
+  .invoice-container {
+    margin: 0;
+    border: none;
+    box-shadow: none;
+    max-width: 100%;
+  }
 }

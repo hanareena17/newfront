@@ -88,7 +88,7 @@
 
   <div class="scroll-row">
     <div class="battery-card" *ngFor="let batteryBrand of batteryBrands.slice(0, 4)">
-      <img [src]="batteryBrand.logo_url || 'assets/icon/favicon.png'" class="battery-img" [alt]="batteryBrand.name" />
+      <img [src]="batteryBrand.image_url" class="battery-img" />
       <div class="battery-name">
         <h4>{{ batteryBrand.name }}</h4>
       </div>

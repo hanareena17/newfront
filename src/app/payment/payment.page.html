@@ -1,0 +1,120 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/booking"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Payment</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="payment-container">
+    <!-- Payment Summary -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Booking Summary</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="summary-item">
+          <span>Service Type:</span>
+          <span>{{ bookingSummary?.service_type }}</span>
+        </div>
+        <div class="summary-item">
+          <span>Date:</span>
+          <span>{{ bookingSummary?.preferred_date }}</span>
+        </div>
+        <div class="summary-item">
+          <span>Time:</span>
+          <span>{{ bookingSummary?.preferred_time }}</span>
+        </div>
+        <div class="summary-item">
+          <span>Location:</span>
+          <span>{{ bookingSummary?.location }}</span>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Payment Methods -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Select Payment Method</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-radio-group [(ngModel)]="selectedPaymentMethod">
+            <ion-item>
+              <ion-radio value="credit">Credit Card</ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-radio value="debit">Debit Card</ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-radio value="ewallet">E-Wallet</ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-radio value="cod">Cash on Delivery</ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Voucher Section -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Apply Voucher</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-input 
+            [(ngModel)]="voucherCode" 
+            placeholder="Enter voucher code"
+            [disabled]="voucherApplied">
+          </ion-input>
+          <ion-button 
+            slot="end" 
+            (click)="applyVoucher()"
+            [disabled]="!voucherCode || voucherApplied">
+            Apply
+          </ion-button>
+        </ion-item>
+        <div *ngIf="voucherApplied" class="voucher-applied">
+          <ion-text color="success">
+            Voucher applied successfully!
+          </ion-text>
+          <ion-button fill="clear" (click)="removeVoucher()">
+            Remove
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Total Amount -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Total Amount</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="amount-item">
+          <span>Subtotal:</span>
+          <span>RM {{ subtotal }}</span>
+        </div>
+        <div class="amount-item" *ngIf="voucherApplied">
+          <span>Discount:</span>
+          <span>-RM {{ discount }}</span>
+        </div>
+        <div class="amount-item total">
+          <span>Total:</span>
+          <span>RM {{ total }}</span>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Pay Button -->
+    <div class="pay-button-container">
+      <ion-button expand="block" (click)="processPayment()">
+        Pay Now
+      </ion-button>
+    </div>
+  </div>
+</ion-content>
